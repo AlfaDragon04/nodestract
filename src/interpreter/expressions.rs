@@ -50,20 +50,23 @@ impl Interpreter {
                 let r = self.eval_expression(right);
                 self.eval_binary_op(l, operator, r)
             },
-            // FIX: Gestione UnaryOp (! e -)
             Expression::UnaryOp { operator, operand } => {
                 let raw_val = self.eval_expression(operand);
                 let val = self.resolve_value(raw_val);
-                
                 match operator.as_str() {
                     "!" => Value::Boolean(!val.is_truthy()),
                     "-" => match val {
                         Value::Integer(i) => Value::Integer(-i),
                         Value::Float(f) => Value::Float(-f),
-                        _ => Value::Null, // Negazione su stringhe/null è nulla
+                        _ => Value::Null,
                     },
                     _ => Value::Null
                 }
+            },
+            Expression::Ternary { condition, true_expr, false_expr } => {
+                let raw_cond = self.eval_expression(condition);
+                let cond_val = self.resolve_value(raw_cond);
+                if cond_val.is_truthy() { self.eval_expression(true_expr) } else { self.eval_expression(false_expr) }
             },
             Expression::FunctionCall { target, args } => self.handle_function_call(target, args)
         }

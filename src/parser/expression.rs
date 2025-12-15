@@ -4,7 +4,25 @@ use super::Parser;
 
 impl Parser {
     pub fn parse_expression(&mut self) -> Expression {
-        self.parse_logical_or()
+        self.parse_ternary()
+    }
+
+    fn parse_ternary(&mut self) -> Expression {
+        let mut expr = self.parse_logical_or();
+        if self.current_token() == &Token::Question {
+            self.advance();
+            let true_expr = self.parse_expression();
+            if self.current_token() == &Token::Colon {
+                self.advance();
+                let false_expr = self.parse_expression();
+                expr = Expression::Ternary {
+                    condition: Box::new(expr),
+                    true_expr: Box::new(true_expr),
+                    false_expr: Box::new(false_expr),
+                };
+            }
+        }
+        expr
     }
 
     fn parse_logical_or(&mut self) -> Expression {
@@ -86,7 +104,6 @@ impl Parser {
     }
 
     pub fn parse_unary(&mut self) -> Expression {
-        // FIX: Supporto per '-' (negazione numerica) e '!' (negazione logica)
         if matches!(self.current_token(), Token::Minus | Token::Bang) {
             let operator = match self.current_token() {
                 Token::Minus => "-".to_string(),
@@ -94,11 +111,8 @@ impl Parser {
                 _ => "".to_string(),
             };
             self.advance(); 
-            let operand = self.parse_unary(); // Ricorsivo per gestire !!true o --5
-            return Expression::UnaryOp {
-                operator,
-                operand: Box::new(operand),
-            };
+            let operand = self.parse_unary();
+            return Expression::UnaryOp { operator, operand: Box::new(operand) };
         }
         self.parse_primary()
     }

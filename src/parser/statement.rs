@@ -5,10 +5,8 @@ use super::Parser;
 impl Parser {
     pub fn parse(&mut self) -> Program {
         let mut statements = Vec::new();
-
         while self.position < self.tokens.len() {
             let token = self.current_token().clone();
-
             match token {
                 Token::EOF => break,
                 Token::Use => statements.push(self.parse_capability()),
@@ -19,13 +17,7 @@ impl Parser {
                 },
                 Token::Func => statements.push(self.parse_function()),
                 Token::Module => { self.advance(); self.advance(); },
-                Token::Identifier(_) => {
-                    if self.peek() == &Token::Equal {
-                        statements.push(self.parse_assignment());
-                    } else {
-                        statements.push(self.parse_func_call_stmt());
-                    }
-                },
+                Token::Identifier(_) => statements.push(self.parse_identifier_stmt()),
                 Token::If => statements.push(self.parse_if_statement()),
                 Token::While => statements.push(self.parse_while_statement()),
                 Token::For => statements.push(self.parse_for_statement()),
@@ -33,50 +25,87 @@ impl Parser {
                 _ => self.advance(),
             }
         }
-
         Program { statements }
     }
 
-    fn parse_capability(&mut self) -> Statement {
-        self.advance(); // skip 'use'
-        let service_name = match self.current_token() {
-            Token::Identifier(s) => s.clone(),
-            _ => "Unknown".to_string(),
-        };
-        self.advance();
+    fn parse_identifier_stmt(&mut self) -> Statement {
+        let name = if let Token::Identifier(s) = self.current_token() { s.clone() } else { "".to_string() };
         
+        let next = self.peek();
+        match next {
+            Token::Equal => self.parse_assignment(),
+            Token::PlusPlus | Token::MinusMinus => {
+                let op = if next == &Token::PlusPlus { "+" } else { "-" };
+                self.advance(); 
+                self.advance(); 
+                Statement::Assignment {
+                    name: name.clone(),
+                    value: Expression::BinaryOp {
+                        left: Box::new(Expression::Variable(name)),
+                        operator: op.to_string(),
+                        right: Box::new(Expression::LiteralNum(1.0)),
+                    }
+                }
+            },
+            Token::PlusEqual | Token::MinusEqual | Token::StarEqual | Token::SlashEqual => {
+                let op = match next {
+                    Token::PlusEqual => "+", Token::MinusEqual => "-",
+                    Token::StarEqual => "*", Token::SlashEqual => "/",
+                    _ => "",
+                };
+                self.advance(); 
+                self.advance(); 
+                let right = self.parse_expression();
+                Statement::Assignment {
+                    name: name.clone(),
+                    value: Expression::BinaryOp {
+                        left: Box::new(Expression::Variable(name)),
+                        operator: op.to_string(),
+                        right: Box::new(right),
+                    }
+                }
+            },
+            _ => self.parse_func_call_stmt(),
+        }
+    }
+
+    fn parse_capability(&mut self) -> Statement {
+        self.advance();
+        let service_name = if let Token::Identifier(s) = self.current_token() { s.clone() } else { "Unknown".to_string() };
+        self.advance();
         let mut params = Vec::new();
-        // Se c'è una graffa aperta, parsiamo i parametri (es: percorsi consentiti)
         if self.current_token() == &Token::LeftBrace {
              self.advance();
              while self.current_token() != &Token::RightBrace && self.current_token() != &Token::EOF {
-                 if let Token::StringLiteral(s) = self.current_token() {
-                     params.push(s.clone());
-                 }
+                 if let Token::StringLiteral(s) = self.current_token() { params.push(s.clone()); }
                  self.advance();
-                 // Salta virgole o identifier inutili per ora, prendiamo solo le stringhe
              }
-             self.advance(); // skip '}'
+             self.advance();
         }
         Statement::CapabilityUse { service: service_name, params }
     }
 
     fn parse_var_decl(&mut self, is_mutable: bool, is_secure: bool) -> Statement {
         self.advance();
-        let name = match self.current_token() {
-            Token::Identifier(s) => s.clone(), _ => "Unknown".to_string(),
-        };
-        self.advance(); self.advance();
+        let name = if let Token::Identifier(s) = self.current_token() { s.clone() } else { "Unknown".to_string() };
+        
+        // CHECK NAME CONVENTION (REGEX SIMULATA)
+        // Permettiamo solo variabili che iniziano con minuscola o '_'
+        let first = name.chars().next().unwrap_or(' ');
+        if !first.is_lowercase() && first != '_' {
+             println!("SYNTAX WARNING: Variable '{}' should start with lowercase or '_'.", name);
+             // In una versione più severa, potremmo fare un panic o ritornare un errore
+        }
+
+        self.advance(); self.advance(); 
         let value = self.parse_expression();
         Statement::VarDecl { is_mutable, is_secure, name, value }
     }
 
     fn parse_function(&mut self) -> Statement {
         self.advance();
-        let name = match self.current_token() {
-            Token::Identifier(s) => s.clone(), _ => "Anon".to_string(),
-        };
-        self.advance(); self.advance();
+        let name = if let Token::Identifier(s) = self.current_token() { s.clone() } else { "Anon".to_string() };
+        self.advance(); self.advance(); 
         let mut params = Vec::new();
         if self.current_token() != &Token::RightParen {
             if let Token::Identifier(p) = self.current_token() { params.push(p.clone()); self.advance(); }
@@ -95,18 +124,16 @@ impl Parser {
         while self.current_token() != &Token::RightBrace && self.current_token() != &Token::EOF {
             match self.current_token() {
                 Token::Stract | Token::Lock | Token::Vault => {
-                    let is_mut = matches!(self.current_token(), Token::Stract | Token::Vault);
-                    let is_sec = matches!(self.current_token(), Token::Vault);
+                    let token = self.current_token().clone();
+                    let is_mut = matches!(token, Token::Stract | Token::Vault);
+                    let is_sec = matches!(token, Token::Vault);
                     body.push(self.parse_var_decl(is_mut, is_sec));
                 },
                 Token::Return => body.push(self.parse_return_statement()),
                 Token::If => body.push(self.parse_if_statement()),
                 Token::While => body.push(self.parse_while_statement()),
                 Token::For => body.push(self.parse_for_statement()),
-                Token::Identifier(_) => {
-                    if self.peek() == &Token::Equal { body.push(self.parse_assignment()); }
-                    else { body.push(self.parse_func_call_stmt()); }
-                },
+                Token::Identifier(_) => body.push(self.parse_identifier_stmt()),
                 _ => self.advance(),
             }
         }
@@ -120,8 +147,13 @@ impl Parser {
         self.advance(); let then_branch = self.parse_block();
         let mut else_branch = None;
         if self.current_token() == &Token::Else {
-            self.advance(); while self.current_token() != &Token::LeftBrace { self.advance(); }
-            self.advance(); else_branch = Some(self.parse_block());
+            self.advance();
+            if self.current_token() == &Token::If {
+                else_branch = Some(vec![self.parse_if_statement()]);
+            } else {
+                while self.current_token() != &Token::LeftBrace { self.advance(); }
+                self.advance(); else_branch = Some(self.parse_block());
+            }
         }
         Statement::IfStatement { condition, then_branch, else_branch }
     }
@@ -135,14 +167,10 @@ impl Parser {
 
     fn parse_for_statement(&mut self) -> Statement {
         self.advance();
-        let iterator = match self.current_token() {
-            Token::Identifier(s) => s.clone(), _ => "i".to_string()
-        };
-        self.advance(); 
-
+        let iterator = if let Token::Identifier(s) = self.current_token() { s.clone() } else { "i".to_string() };
+        self.advance();
         let start = self.parse_primary(); 
         let end = self.parse_primary();
-
         while self.current_token() != &Token::LeftBrace { self.advance(); }
         self.advance();
         let body = self.parse_block();
@@ -154,18 +182,14 @@ impl Parser {
     }
 
     fn parse_assignment(&mut self) -> Statement {
-        let name = match self.current_token() {
-            Token::Identifier(s) => s.clone(), _ => "Unknown".to_string(),
-        };
+        let name = if let Token::Identifier(s) = self.current_token() { s.clone() } else { "Unknown".to_string() };
         self.advance(); self.advance();
         let value = self.parse_expression();
         Statement::Assignment { name, value }
     }
 
     fn parse_func_call_stmt(&mut self) -> Statement {
-        let mut target = match self.current_token() {
-            Token::Identifier(s) => s.clone(), _ => "".to_string()
-        };
+        let mut target = if let Token::Identifier(s) = self.current_token() { s.clone() } else { "".to_string() };
         self.advance();
         if self.current_token() == &Token::Dot {
             self.advance();
@@ -173,7 +197,7 @@ impl Parser {
                 target = format!("{}.{}", target, method); self.advance();
             }
         }
-        self.advance();
+        self.advance(); 
         let mut args = Vec::new();
         if self.current_token() != &Token::RightParen {
             args.push(self.parse_expression());

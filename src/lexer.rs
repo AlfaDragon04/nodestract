@@ -1,16 +1,18 @@
 #[derive(Debug, PartialEq, Clone)]
 pub enum Token {
     Lock, Stract, Vault, Safe, Capability, Use, Module, Func, If, Else, While, For, In, Return,
-    True, False, 
+    True, False,
     Identifier(String), StringLiteral(String), Number(f64),
     LeftBrace, RightBrace, LeftParen, RightParen, LeftBracket, RightBracket,
-    Equal, EqualEqual, 
-    Bang, BangEqual,   // <--- AGGIUNTO Bang (!) accanto a BangEqual (!=)
-    Greater, GreaterEqual,             
-    Less, LessEqual,                   
-    Plus, Minus, Star, Slash, 
-    AmperAmper, PipePipe,              
-    Dot, Range, Comma, Colon,
+    Equal, EqualEqual, Bang, BangEqual, 
+    Plus, PlusPlus, PlusEqual,
+    Minus, MinusMinus, MinusEqual,
+    Star, StarEqual, 
+    Slash, SlashEqual,
+    Question, Colon,
+    Greater, GreaterEqual, Less, LessEqual,
+    AmperAmper, PipePipe,
+    Dot, Range, Comma,
     EOF, Unknown(char),
 }
 
@@ -36,18 +38,30 @@ impl Lexer {
                 ')' => { tokens.push(Token::RightParen); self.position += 1; }
                 '[' => { tokens.push(Token::LeftBracket); self.position += 1; }
                 ']' => { tokens.push(Token::RightBracket); self.position += 1; }
+                '?' => { tokens.push(Token::Question); self.position += 1; }
+                ',' => { tokens.push(Token::Comma); self.position += 1; }
                 '.' => { 
                     if self.peek_next() == '.' { self.position += 2; tokens.push(Token::Range); } 
                     else { tokens.push(Token::Dot); self.position += 1; }
                 }
-                ',' => { tokens.push(Token::Comma); self.position += 1; }
-                ':' => { tokens.push(Token::Colon); self.position += 1; }
-                '+' => { tokens.push(Token::Plus); self.position += 1; }
-                '-' => { tokens.push(Token::Minus); self.position += 1; }
-                '*' => { tokens.push(Token::Star); self.position += 1; }
+                '+' => {
+                    if self.peek_next() == '+' { self.position += 2; tokens.push(Token::PlusPlus); }
+                    else if self.peek_next() == '=' { self.position += 2; tokens.push(Token::PlusEqual); }
+                    else { tokens.push(Token::Plus); self.position += 1; }
+                }
+                '-' => {
+                    if self.peek_next() == '-' { self.position += 2; tokens.push(Token::MinusMinus); }
+                    else if self.peek_next() == '=' { self.position += 2; tokens.push(Token::MinusEqual); }
+                    else { tokens.push(Token::Minus); self.position += 1; }
+                }
+                '*' => {
+                    if self.peek_next() == '=' { self.position += 2; tokens.push(Token::StarEqual); }
+                    else { tokens.push(Token::Star); self.position += 1; }
+                }
                 '/' => {
                     if self.peek_next() == '*' { self.skip_multiline_comment(); } 
                     else if self.peek_next() == '/' { self.skip_comment(); } 
+                    else if self.peek_next() == '=' { self.position += 2; tokens.push(Token::SlashEqual); }
                     else { tokens.push(Token::Slash); self.position += 1; }
                 }
                 '=' => {
@@ -56,8 +70,9 @@ impl Lexer {
                 }
                 '!' => {
                     if self.peek_next() == '=' { self.position += 2; tokens.push(Token::BangEqual); }
-                    else { tokens.push(Token::Bang); self.position += 1; } // <--- FIX: Ora riconosce '!' da solo
+                    else { tokens.push(Token::Bang); self.position += 1; }
                 }
+                ':' => { tokens.push(Token::Colon); self.position += 1; }
                 '>' => { 
                     if self.peek_next() == '=' { self.position += 2; tokens.push(Token::GreaterEqual); }
                     else { tokens.push(Token::Greater); self.position += 1; } 
@@ -75,7 +90,7 @@ impl Lexer {
                     else { tokens.push(Token::Unknown('|')); self.position += 1; }
                 }
                 '"' => { tokens.push(self.read_string()); }
-                _ if char.is_alphabetic() => { tokens.push(self.read_identifier()); }
+                _ if char.is_alphabetic() || char == '_' => { tokens.push(self.read_identifier()); }
                 _ if char.is_numeric() => { tokens.push(self.read_number()); }
                 _ => { tokens.push(Token::Unknown(char)); self.position += 1; }
             }
@@ -90,33 +105,54 @@ impl Lexer {
             self.position += 1;
         }
         let text: String = self.input[start..self.position].iter().collect();
+
+        // NESSUN CONTROLLO REGEX QUI per non rompere i moduli Standard (IO, FS, ecc.)
         match text.as_str() {
-            "lock" => Token::Lock,
-            "stract" => Token::Stract,
-            "vault" => Token::Vault,
-            "safe" => Token::Safe,
-            "capability" => Token::Capability,
-            "use" => Token::Use,
-            "module" => Token::Module,
-            "func" => Token::Func,
-            "if" => Token::If,
-            "else" => Token::Else,
-            "while" => Token::While,
-            "for" => Token::For,
-            "in" => Token::In,
-            "return" => Token::Return,
-            "true" => Token::True,
+            "lock" => Token::Lock, "stract" => Token::Stract, "vault" => Token::Vault,
+            "safe" => Token::Safe, "capability" => Token::Capability, "use" => Token::Use,
+            "module" => Token::Module, "func" => Token::Func, "if" => Token::If,
+            "else" => Token::Else, "while" => Token::While, "for" => Token::For,
+            "in" => Token::In, "return" => Token::Return, "true" => Token::True,
             "false" => Token::False,
             _ => Token::Identifier(text),
         }
     }
 
+    fn is_keyword(&self, s: &str) -> bool {
+        matches!(s, "lock" | "stract" | "vault" | "safe" | "capability" | "use" | "module" | "func" | "if" | "else" | "while" | "for" | "in" | "return" | "true" | "false")
+    }
+
+    // [FIX] Nuova implementazione con supporto ESCAPE SEQUENCES
     fn read_string(&mut self) -> Token {
-        self.position += 1;
-        let start = self.position;
-        while self.position < self.input.len() && self.input[self.position] != '"' { self.position += 1; }
-        let text: String = self.input[start..self.position].iter().collect();
-        self.position += 1;
+        self.position += 1; // Salta la virgoletta di apertura
+        let mut text = String::new();
+        
+        while self.position < self.input.len() {
+            let c = self.input[self.position];
+            
+            if c == '\\' {
+                // Abbiamo trovato un escape!
+                self.position += 1;
+                if self.position < self.input.len() {
+                    let escaped_char = self.input[self.position];
+                    match escaped_char {
+                        'n' => text.push('\n'),
+                        't' => text.push('\t'),
+                        'r' => text.push('\r'),
+                        '"' => text.push('"'),  // Qui sta la magia: \" diventa "
+                        '\\' => text.push('\\'),
+                        _ => text.push(escaped_char), // Fallback
+                    }
+                }
+            } else if c == '"' {
+                break; // Fine stringa
+            } else {
+                text.push(c);
+            }
+            self.position += 1;
+        }
+        
+        self.position += 1; // Salta la virgoletta di chiusura
         Token::StringLiteral(text)
     }
 

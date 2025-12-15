@@ -1,6 +1,6 @@
 [package]
 name = "ns"
-version = "0.7.0"
+version = "0.8.0"
 edition = "2021"
 authors = ["HawkStract"]
 description = "The official compiler for the NodeStract (.ns) language"
@@ -9,6 +9,7 @@ description = "The official compiler for the NodeStract (.ns) language"
 aes-gcm = "0.10.3"
 rand = "0.8.5"
 hex = "0.4.3"
+reqwest = { version = "0.11", features = ["blocking", "json", "native-tls", "cookies"] }
 
 [build-dependencies]
 embed-resource = "2.5"

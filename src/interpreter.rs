@@ -11,6 +11,7 @@ pub mod statements;
 pub mod ops;
 pub mod functions;
 pub mod fs;
+pub mod net; // <--- NUOVO MODULO
 
 #[derive(Clone, Debug)]
 pub struct VarEntry {
@@ -23,6 +24,7 @@ pub struct Interpreter {
     pub scopes: Vec<HashMap<String, VarEntry>>,
     pub capabilities: Vec<String>,
     pub fs_allow_list: Vec<String>,
+    pub net_allow_list: Vec<String>, // <--- NUOVA WHITELIST
     pub functions: HashMap<String, Statement>,
     pub last_return: Option<Value>,
 }
@@ -33,11 +35,14 @@ impl Interpreter {
             scopes: vec![HashMap::new()],
             capabilities: Vec::new(),
             fs_allow_list: Vec::new(),
+            net_allow_list: Vec::new(), // Init
             functions: HashMap::new(),
             last_return: None,
         }
     }
 
+    // ... (metodi current_scope, enter_scope, exit_scope, get_var, set_var, define_var, get_key, encrypt_vault, decrypt_vault RIMANGONO UGUALI - Copiali dal vecchio file) ...
+    
     pub fn current_scope(&mut self) -> &mut HashMap<String, VarEntry> {
         self.scopes.last_mut().unwrap()
     }
@@ -123,11 +128,8 @@ impl Interpreter {
         if parts.len() != 3 { return "ERROR_FORMAT".to_string(); }
         let key = Self::get_key();
         let cipher = Aes256Gcm::new(&key.into());
-        
-        // FIX: Salviamo il vettore decodificato in una variabile per estendere la sua vita
         let nonce_vec = hex::decode(parts[1]).unwrap_or_default();
         let nonce = Nonce::from_slice(&nonce_vec);
-        
         match cipher.decrypt(nonce, hex::decode(parts[2]).unwrap_or_default().as_ref()) {
             Ok(plaintext) => String::from_utf8(plaintext).unwrap_or_else(|_| "ERROR_UTF8".to_string()),
             Err(_) => "ERROR_DECRYPT".to_string()
@@ -141,6 +143,8 @@ impl Interpreter {
                     self.capabilities.push(service.clone());
                     if service == "FS" {
                         self.fs_allow_list = params.clone();
+                    } else if service == "Net" {
+                        self.net_allow_list = params.clone(); // <--- Load URL whitelist
                     }
                 },
                 crate::ast::Statement::FunctionDecl { name, .. } => { self.functions.insert(name.clone(), stmt.clone()); },
