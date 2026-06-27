@@ -1,0 +1,40 @@
+const COLOR_RESET: &str = "\x1b[0m";
+const COLOR_GREEN: &str = "\x1b[32m";
+const COLOR_RED: &str = "\x1b[31m";
+const COLOR_CYAN: &str = "\x1b[36m";
+
+pub fn show_banner() {
+    println!("{}
+    _   _          _        ____  _                  _   
+   | \\ | | ___  __| | ___  / ___|| |_ _ __ __ _  ___| |_ 
+   |  \\| |/ _ \\/ _` |/ _ \\ \\___ \\| __| '__/ _` |/ __| __|
+   | |\\  | (_) \\ (_| |  __/  ___) | |_| | | (_| | (__| |_ 
+   |_| \\_|\\___/ \\__,_|\\___| |____/ \\__|_|  \\__,_|\\___|\\__|
+   
+   HawkStract Ecosystem - Secure. Atomic. Abstract.
+   {}", COLOR_CYAN, COLOR_RESET);
+}
+
+pub fn show_usage() {
+    println!("Usage:");
+    println!("  nsc build <file.ns> [--lang <lang>]    Compile and run a NodeStract file");
+    println!("  nsc version                            Show version information");
+    println!("\nSupported languages: en, it, es, fr, de, pt, ro");
+}
+
+pub fn show_welcome() {
+    show_banner();
+    show_usage();
+}
+
+pub fn show_version() {
+    println!("Node Stract Compiler (NSC) v0.8.0 - HawkStract Ecosystem");
+}
+
+pub fn show_error(msg: &str) {
+    println!("{}Error: {}{}", COLOR_RED, msg, COLOR_RESET);
+}
+
+pub fn show_success(msg: &str) {
+    println!("{}{} [Success]{}", COLOR_GREEN, msg, COLOR_RESET);
+}
