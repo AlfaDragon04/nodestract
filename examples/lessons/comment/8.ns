@@ -1,0 +1,83 @@
+// ============================================================================
+// LEZIONE 8: PERSISTENZA DEI DATI E GESTIONE FILE (NFS)
+// ============================================================================
+// Fino ad ora, tutti i dati andavano persi alla chiusura del programma.
+// In questa lezione impariamo a salvare i dati in modo permanente.
+// Gli argomenti trattati sono:
+// 1. Importazione del modulo del file system ('nfs').
+// 2. Scrittura di stringhe all'interno di un file di testo ('scrivi').
+// 3. Lettura del contenuto da un file memorizzato sul disco ('leggi').
+// 4. Gestione dei valori nulli ('nullo') in caso di file inesistenti o vuoti.
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo il supporto per la lingua italiana.
+// ----------------------------------------------------------------------------
+importa italiano da translate
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo il modulo di input/output per stampare i messaggi nel terminale.
+// ----------------------------------------------------------------------------
+importa * da nio
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo il modulo 'nfs' (Node File System). Questo modulo mette a disposizione
+// le funzioni 'leggi' e 'scrivi' per interagire con i file sul disco fisso.
+// ----------------------------------------------------------------------------
+importa * da nfs
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Definiamo una variabile 'nome_file' contenente il nome del file di testo
+// su cui vogliamo lavorare: "registro_stage.txt".
+// ----------------------------------------------------------------------------
+crea nome_file = "registro_stage.txt"
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Scriviamo dati nel file usando la funzione di sistema 'scrivi'.
+// I parametri sono: il nome del file (primo argomento) e il testo da salvarci dentro
+// (secondo argomento). Se il file non esiste, verrà creato automaticamente.
+// Se esiste già, il contenuto precedente verrà sovrascritto.
+// ----------------------------------------------------------------------------
+scrivi(nome_file, "Studente 1: Superato")
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Leggiamo il contenuto del file usando la funzione 'leggi'.
+// Il parametro è il nome del file da leggere. La funzione restituisce una stringa
+// con il contenuto oppure il valore speciale 'nullo' se il file non esiste.
+// Il valore letto viene salvato nella variabile 'dati_letti'.
+// ----------------------------------------------------------------------------
+crea dati_letti = leggi(nome_file)
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Effettuiamo un controllo condizionale. Verifichiamo se 'dati_letti' è 'nullo'.
+// 'nullo' rappresenta l'assenza di valore o un errore di lettura.
+// L'operatore '==' controlla l'uguaglianza.
+// ----------------------------------------------------------------------------
+se (dati_letti == nullo) {
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Se la lettura fallisce o restituisce nullo, mostriamo un avviso di errore.
+    // ------------------------------------------------------------------------
+    stampa("Errore: impossibile leggere il file o file vuoto.")
+} 
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Se 'dati_letti' non è nullo (ovvero contiene la stringa letta dal file),
+// entriamo in questo blocco 'altrimenti'.
+// ----------------------------------------------------------------------------
+altrimenti {
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Stampiamo a schermo il contenuto che abbiamo recuperato con successo dal file.
+    // ------------------------------------------------------------------------
+    stampa("Contenuto letto dal file:", dati_letti)
+}

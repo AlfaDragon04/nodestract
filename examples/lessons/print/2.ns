@@ -1,0 +1,20 @@
+// Lezione 2: Operatori e Decisioni (se/altrimenti)
+importa italiano da translate
+importa stampa da nio
+
+crea voto_esame = 18
+crea soglia_sufficienza = 18
+crea lode = falso
+
+// Controlliamo se il voto è sufficiente
+se (voto_esame >= soglia_sufficienza) {
+    stampa("Complimenti! Hai superato l'esame.")
+    
+    // Controllo speciale per il massimo dei voti
+    se (voto_esame == 30 && lode == vero) {
+        stampa("Risultato eccellente: 30 e Lode!")
+    }
+} altrimenti {
+    // Cosa succede se il voto è inferiore a 18
+    stampa("Purtroppo non hai superato l'esame. Riprova!")
+}

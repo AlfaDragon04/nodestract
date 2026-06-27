@@ -1,0 +1,74 @@
+// ============================================================================
+// LEZIONE 5: LE FUNZIONI E LA REUSABILITÀ DEL CODICE (FUNZIONE / RITORNA)
+// ============================================================================
+// In questa lezione introduciamo uno dei pilastri della programmazione: le funzioni.
+// Gli obiettivi principali sono:
+// 1. Capire cos'è una funzione (una scatola nera che esegue un compito specifico).
+// 2. Definire una funzione con parametri di input usando la parola chiave 'funzione'.
+// 3. Restituire un risultato al chiamante usando la parola chiave 'ritorna'.
+// 4. Vedere come chiamare (eseguire) una funzione passandole valori reali.
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo il supporto per l'italiano per tradurre 'function' in 'funzione'
+// e il comando 'return' in 'ritorna'.
+// ----------------------------------------------------------------------------
+importa italiano da translate
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo il modulo per la visualizzazione a schermo dei risultati.
+// ----------------------------------------------------------------------------
+importa stampa da nio
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Definiamo una funzione chiamata 'calcola_area_rettangolo'.
+// Utilizziamo la parola chiave 'funzione' seguita dal nome scelto per la funzione.
+// Tra parentesi tonde indichiamo i parametri di ingresso: 'base' ed 'altezza'.
+// Questi parametri si comportano come variabili locali visibili solo dentro la funzione.
+// Le graffe delimitano il corpo della funzione, cioè le istruzioni da eseguire.
+// ----------------------------------------------------------------------------
+funzione calcola_area_rettangolo(base, altezza) {
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // All'interno della funzione creiamo una variabile locale chiamata 'area'.
+    // Questa variabile calcola il prodotto tra i due parametri di ingresso.
+    // Essendo locale, cesserà di esistere non appena la funzione avrà terminato.
+    // ------------------------------------------------------------------------
+    crea area = base * altezza
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Restituiamo il valore calcolato al codice che ha chiamato la funzione.
+    // Usiamo la parola chiave 'ritorna' (corrispondente a 'return').
+    // Questa istruzione interrompe l'esecuzione della funzione e invia indietro il valore.
+    // ------------------------------------------------------------------------
+    ritorna area
+}
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Creiamo due variabili esterne alla funzione per memorizzare le dimensioni reali
+// del rettangolo di cui vogliamo calcolare l'area.
+// ----------------------------------------------------------------------------
+crea base_rettangolo = 10
+crea altezza_rettangolo = 5
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Eseguiamo la chiamata alla funzione 'calcola_area_rettangolo'.
+// Passiamo come argomenti i valori contenuti in 'base_rettangolo' e 'altezza_rettangolo'.
+// Il computer salta alla riga della funzione, assegna questi valori a 'base' e 'altezza',
+// esegue il calcolo, e il valore restituito da 'ritorna' viene infine memorizzato
+// all'interno della nuova variabile 'area_risultante'.
+// ----------------------------------------------------------------------------
+crea area_risultante = calcola_area_rettangolo(base_rettangolo, altezza_rettangolo)
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Visualizziamo l'area calcolata a schermo per verificare la correttezza del calcolo.
+// ----------------------------------------------------------------------------
+stampa("L'area calcolata e':", area_risultante)

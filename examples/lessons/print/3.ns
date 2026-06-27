@@ -1,0 +1,19 @@
+// Lezione 3: Input Utente e Interattivita'
+importa italiano da translate
+importa * da nio
+
+stampa("Benvenuto nel programma interattivo!")
+
+// Chiediamo il nome all'utente
+crea nome = inserisci("Come ti chiami? ")
+stampa("Ciao", nome, "! E' un piacere conoscerti.")
+
+// Chiediamo una risposta alla domanda
+crea risposta = inserisci("Quanto fa 2 + 2? ")
+
+// Controllo logico della risposta
+se (risposta == "4") {
+    stampa("Risposta esatta,", nome, "! Sei bravissimo in matematica.")
+} altrimenti {
+    stampa("Spiacente,", nome, ", risposta errata. Il risultato corretto era 4!")
+}

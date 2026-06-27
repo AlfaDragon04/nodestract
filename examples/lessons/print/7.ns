@@ -1,0 +1,22 @@
+// Lezione 7: Array (Vettori)
+importa italiano da translate
+importa * da nio
+
+// Creazione di un array con 5 elementi
+crea voti = [24, 27, 30, 18, 22]
+
+crea indice = 0
+crea numero_elementi = 5
+
+stampa("Elenco dei voti memorizzati:")
+
+// Ciclo per scorrere l'array
+mentre (indice < numero_elementi) {
+    // Accesso all'elemento in posizione 'indice'
+    crea voto_corrente = voti[indice]
+    
+    stampa("Voto all'indice", indice, "e':", voto_corrente)
+    
+    // Incremento dell'indice per passare all'elemento successivo
+    indice = indice + 1
+}

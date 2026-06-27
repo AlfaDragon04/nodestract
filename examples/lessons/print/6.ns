@@ -1,0 +1,14 @@
+// Lezione 6: La Libreria Matematica (nmath)
+importa italiano da translate
+importa * da nio
+importa * da nmath
+
+crea angolo = 0.5
+
+// Utilizzo delle funzioni matematiche sen e cos
+crea seno_angolo = sen(angolo)
+crea coseno_angolo = cos(angolo)
+
+stampa("Angolo:", angolo)
+stampa("Seno:", seno_angolo)
+stampa("Coseno:", coseno_angolo)

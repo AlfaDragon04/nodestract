@@ -1,0 +1,17 @@
+// Lezione 5: Funzioni e Ritorno
+importa italiano da translate
+importa stampa da nio
+
+// Definizione della funzione con due parametri in ingresso
+funzione calcola_area_rettangolo(base, altezza) {
+    crea area = base * altezza
+    ritorna area
+}
+
+crea base_rettangolo = 10
+crea altezza_rettangolo = 5
+
+// Chiamata alla funzione e memorizzazione del risultato
+crea area_risultante = calcola_area_rettangolo(base_rettangolo, altezza_rettangolo)
+
+stampa("L'area calcolata e':", area_risultante)

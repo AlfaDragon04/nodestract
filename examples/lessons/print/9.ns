@@ -1,0 +1,23 @@
+// Lezione 9: Algoritmo di Ricerca del Minimo
+importa italiano da translate
+importa * da nio
+
+crea temperature = [15, 22, 9, 31, 18]
+
+// Ipotizziamo che il primo sia il minimo
+crea minima = temperature[0]
+crea indice = 1
+crea totale_misurazioni = 5
+
+// Scendiamo lungo l'array per trovare valori minori di 'minima'
+mentre (indice < totale_misurazioni) {
+    crea temp_corrente = temperature[indice]
+    
+    se (temp_corrente < minima) {
+        minima = temp_corrente // Aggiorniamo il minimo
+    }
+    
+    indice = indice + 1
+}
+
+stampa("La temperatura minima registrata e':", minima)

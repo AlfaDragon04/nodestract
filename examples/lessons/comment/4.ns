@@ -1,0 +1,82 @@
+// ============================================================================
+// LEZIONE 4: I CICLI E LA RIPETIZIONE DI ISTRUZIONI (MENTRE)
+// ============================================================================
+// Questa lezione spiega come far ripetere al computer un blocco di istruzioni.
+// Gli argomenti principali sono:
+// 1. La struttura iterativa 'mentre' (il ciclo 'while' in inglese).
+// 2. La condizione di permanenza nel ciclo.
+// 3. La variabile contatore e l'incremento (fondamentale per evitare cicli infiniti).
+// 4. L'ordine di esecuzione delle istruzioni all'interno di un ciclo.
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo il supporto per la lingua italiana. Questo mappa il comando
+// 'while' del linguaggio originale nella parola italiana 'mentre'.
+// ----------------------------------------------------------------------------
+importa italiano da translate
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo il modulo di stampa per visualizzare l'avanzamento del ciclo.
+// ----------------------------------------------------------------------------
+importa stampa da nio
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Creiamo una variabile 'contatore' inizializzandola a 1.
+// Questa variabile terrà traccia del numero di volte che abbiamo eseguito il ciclo.
+// Viene chiamata "variabile di controllo" o "indice del ciclo".
+// ----------------------------------------------------------------------------
+crea contatore = 1
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Creiamo una variabile 'limite' e la impostiamo a 5.
+// Questo valore stabilisce il punto di arresto del nostro ciclo.
+// Indica che vogliamo ripetere l'azione per un massimo di 5 volte.
+// ----------------------------------------------------------------------------
+crea limite = 5
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Stampiamo un messaggio iniziale fuori dal ciclo. Questo serve all'utente
+// per capire che l'esecuzione del programma è iniziata ed è arrivata a questo punto.
+// ----------------------------------------------------------------------------
+stampa("Inizio conteggio:")
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Avviamo il ciclo usando la parola chiave 'mentre'.
+// Tra parentesi tonde scriviamo la condizione logica: (contatore <= limite).
+// Finché questa espressione restituisce 'vero', il codice all'interno delle graffe
+// continuerà ad essere eseguito ripetutamente.
+// Quando il contatore diventerà maggiore del limite, la condizione diventerà 'falso'
+// e il computer salterà direttamente alla prima istruzione dopo la parentesi graffa chiusa.
+// ----------------------------------------------------------------------------
+mentre (contatore <= limite) {
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Questa istruzione stampa il valore corrente del contatore.
+    // Ad ogni ripetizione (chiamata anche "iterazione"), il valore mostrato cambia
+    // riflettendo lo stato corrente della variabile.
+    // ------------------------------------------------------------------------
+    stampa("Il contatore e' a quota:", contatore)
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Questa riga è CRUCIALE. Incrementiamo il valore di 'contatore' di 1.
+    // Significa: "prendi il valore attuale di contatore, aggiungi 1 e rimettilo dentro contatore".
+    // Senza questa riga, 'contatore' rimarrebbe sempre uguale a 1, la condizione (1 <= 5)
+    // sarebbe sempre vera e il programma rimarrebbe bloccato all'infinito (ciclo infinito).
+    // ------------------------------------------------------------------------
+    contatore = contatore + 1
+}
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Questo messaggio viene stampato solo DOPO che il ciclo è terminato con successo.
+// Dimostra che il flusso del programma ha ripreso il suo andamento sequenziale.
+// ----------------------------------------------------------------------------
+stampa("Fine del conteggio!")

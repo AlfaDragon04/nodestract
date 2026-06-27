@@ -1,0 +1,73 @@
+// ============================================================================
+// LEZIONE 6: LA LIBRERIA MATEMATICA (NMATH) E LE FUNZIONI DI SISTEMA
+// ============================================================================
+// Questa lezione mostra come usare funzioni matematiche predefinite.
+// Gli argomenti trattati sono:
+// 1. L'importazione di moduli standard di NodeStract ('nmath').
+// 2. L'uso del carattere jolly '*' per importare tutte le funzioni di un modulo.
+// 3. L'utilizzo di funzioni trigonometriche come seno ('sen') e coseno ('cos').
+// 4. L'importanza delle librerie per evitare di reinventare la ruota.
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo il supporto per la lingua italiana per localizzare i termini chiave.
+// ----------------------------------------------------------------------------
+importa italiano da translate
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Utilizziamo il simbolo '*' per importare tutto il contenuto della libreria 'nio'.
+// Questo ci permette di usare tutti i comandi di input/output senza doverli
+// elencare uno per uno (ad esempio, possiamo usare direttamente 'stampa').
+// ----------------------------------------------------------------------------
+importa * da nio
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo tutte le funzioni del modulo matematico 'nmath'.
+// Questa libreria contiene funzioni matematiche avanzate già scritte da altri
+// programmatori, come funzioni trigonometriche, radici quadrate, logaritmi, ecc.
+// Usiamo '*' per avere accesso a tutta la suite matematica.
+// ----------------------------------------------------------------------------
+importa * da nmath
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Creiamo una variabile 'angolo' che rappresenta la misura in radianti.
+// Impostiamo il valore decimale a 0.5.
+// ----------------------------------------------------------------------------
+crea angolo = 0.5
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Chiamiamo la funzione di sistema 'sen' (seno) passandole come argomento l'angolo.
+// Questa funzione calcola il valore matematico del seno dell'angolo.
+// Il risultato viene memorizzato nella variabile 'seno_angolo'.
+// ----------------------------------------------------------------------------
+crea seno_angolo = sen(angolo)
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Chiamiamo la funzione di sistema 'cos' (coseno) passandole l'angolo.
+// Il risultato viene memorizzato nella variabile 'coseno_angolo'.
+// ----------------------------------------------------------------------------
+crea coseno_angolo = cos(angolo)
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Stampiamo a schermo il valore dell'angolo di partenza.
+// ----------------------------------------------------------------------------
+stampa("Angolo:", angolo)
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Stampiamo il valore del seno calcolato.
+// ----------------------------------------------------------------------------
+stampa("Seno:", seno_angolo)
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Stampiamo il valore del coseno calcolato.
+// ----------------------------------------------------------------------------
+stampa("Coseno:", coseno_angolo)

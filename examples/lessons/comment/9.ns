@@ -1,0 +1,95 @@
+// ============================================================================
+// LEZIONE 9: ALGORITMI - RICERCA E SCELTA DEL VALORE MINIMO
+// ============================================================================
+// Questa lezione unisce i concetti di cicli, condizionali e array in un algoritmo.
+// Un algoritmo e' una serie di passaggi ordinati per risolvere un problema.
+// Qui risolveremo il problema di trovare il valore minore in una lista.
+// Gli argomenti principali sono:
+// 1. Inizializzare una variabile di stato ("minima") con il primo elemento.
+// 2. Scorrere il resto dell'array con un ciclo.
+// 3. Confrontare ogni elemento con il minimo corrente e aggiornarlo se necessario.
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo il supporto per la sintassi italiana.
+// ----------------------------------------------------------------------------
+importa italiano da translate
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo la libreria di input/output per stampare i risultati.
+// ----------------------------------------------------------------------------
+importa * da nio
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Dichiariamo un array di temperature registrate durante una giornata.
+// L'obiettivo del nostro programma e' trovare la temperatura piu' bassa (il minimo).
+// ----------------------------------------------------------------------------
+crea temperature = [15, 22, 9, 31, 18]
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Ipotizziamo all'inizio che il primo valore (all'indice 0, cioe' 15) sia il minimo.
+// Salviamo questa ipotesi nella variabile 'minima'.
+// Man mano che esaminiamo gli altri numeri, aggiorneremo questa variabile.
+// ----------------------------------------------------------------------------
+crea minima = temperature[0]
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Impostiamo l'indice di partenza del ciclo a 1.
+// Poiche' abbiamo gia' considerato il valore all'indice 0 come ipotesi iniziale,
+// possiamo iniziare a confrontare i valori a partire dal secondo elemento.
+// ----------------------------------------------------------------------------
+crea indice = 1
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Definiamo il numero totale di elementi presenti nel nostro array (5).
+// Questo sara' la condizione di arresto del nostro ciclo.
+// ----------------------------------------------------------------------------
+crea totale_misurazioni = 5
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Avviamo un ciclo per scorrere l'array dal secondo elemento fino all'ultimo.
+// ----------------------------------------------------------------------------
+mentre (indice < totale_misurazioni) {
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Preleviamo la temperatura corrente situata alla posizione 'indice'.
+    // ------------------------------------------------------------------------
+    crea temp_corrente = temperature[indice]
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Confrontiamo il valore corrente con l'ipotesi salvata in 'minima'.
+    // Se la temperatura corrente e' minore di quella memorizzata in 'minima',
+    // significa che abbiamo trovato un nuovo minimo assoluto fino a questo punto.
+    // ------------------------------------------------------------------------
+    se (temp_corrente < minima) {
+        
+        // --------------------------------------------------------------------
+        // SPIEGAZIONE CODICE SOTTOSTANTE:
+        // Sovrascriviamo la variabile 'minima' con il nuovo valore piu' piccolo trovato.
+        // Questo aggiorna il nostro stato del programma.
+        // --------------------------------------------------------------------
+        minima = temp_corrente
+    }
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Passiamo al prossimo indice dell'array incrementando la variabile di controllo.
+    // ------------------------------------------------------------------------
+    indice = indice + 1
+}
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Alla fine del ciclo, la variabile 'minima' conterra' effettivamente il valore piu' basso.
+// Stampiamo il risultato per mostrarlo all'utente.
+// ----------------------------------------------------------------------------
+stampa("La temperatura minima registrata e':", minima)

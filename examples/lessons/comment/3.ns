@@ -1,0 +1,66 @@
+// ============================================================================
+// LEZIONE 3: INPUT UTENTE E INTERATTIVITÀ (INSERISCI)
+// ============================================================================
+// Questa lezione rende i nostri programmi interattivi.
+// Gli argomenti principali sono:
+// 1. L'importazione del modulo di input/output ('nio') con la wildcard '*'.
+// 2. Come visualizzare una domanda all'utente e attendere una risposta.
+// 3. Salvare l'input digitato in una variabile.
+// 4. Utilizzare l'input per personalizzare l'output e fare dei controlli.
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo il supporto per la lingua italiana. Questo traduce il comando
+// inglese 'input' nella parola chiave italiana 'inserisci'.
+// ----------------------------------------------------------------------------
+importa italiano da translate
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo tutte le funzioni dal modulo di input/output 'nio'.
+// 'inserisci' e' la funzione che ferma il programma e aspetta che l'utente
+// digiti qualcosa sulla tastiera e prema Invio.
+// ----------------------------------------------------------------------------
+importa * da nio
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Stampiamo una riga introduttiva per accogliere l'utente nel programma.
+// ----------------------------------------------------------------------------
+stampa("Benvenuto nel programma interattivo!")
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Usiamo la funzione 'inserisci' passando una stringa come argomento.
+// Quella stringa viene mostrata all'utente come domanda (chiamata "prompt").
+// Il programma si ferma qui finche' l'utente non digita il suo nome e preme Invio.
+// Il valore digitato viene quindi restituito e memorizzato nella variabile 'nome'.
+// ----------------------------------------------------------------------------
+crea nome = inserisci("Come ti chiami? ")
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Salutiamo l'utente usando il nome che ha appena digitato.
+// ----------------------------------------------------------------------------
+stampa("Ciao", nome, "! E' un piacere conoscerti.")
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Chiediamo all'utente la risposta a una semplice domanda logico-matematica.
+// La risposta digitata verra' salvata nella variabile 'risposta'.
+// ----------------------------------------------------------------------------
+crea risposta = inserisci("Quanto fa 2 + 2? ")
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Usiamo il blocco condizionale 'se' per controllare se la risposta digitata
+// e' esattamente uguale alla stringa "4".
+// Se l'utente risponde correttamente, riceve un complimento;
+// altrimenti viene informato che la risposta e' errata.
+// ----------------------------------------------------------------------------
+se (risposta == "4") {
+    stampa("Risposta esatta,", nome, "! Sei bravissimo in matematica.")
+} altrimenti {
+    stampa("Spiacente,", nome, ", risposta errata. Il risultato corretto era 4!")
+}

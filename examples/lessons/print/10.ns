@@ -1,0 +1,30 @@
+// Lezione 10: Mini-progetto Integrato (Registro Voti)
+importa italiano da translate
+importa * da nio
+importa * da nfs
+
+// Funzione helper per calcolare la media aritmetica di un array
+funzione calcola_media(lista_voti, quantita) {
+    crea somma = 0
+    crea i = 0
+    mentre (i < quantita) {
+        somma = somma + lista_voti[i]
+        i = i + 1
+    }
+    ritorna somma / quantita
+}
+
+stampa("=== Avvio Sistema Registro ===")
+
+crea voti_studenti = [28, 24, 30, 26, 22]
+crea numero_studenti = 5
+
+// Calcoliamo la media chiamando la funzione helper
+crea media_voti = calcola_media(voti_studenti, numero_studenti)
+stampa("Media dei voti degli studenti:", media_voti)
+
+// Salviamo il report su file
+crea report = "Media dei voti calcolata: "
+scrivi("report_media.txt", report)
+
+stampa("=== Report Salvato con Successo ===")

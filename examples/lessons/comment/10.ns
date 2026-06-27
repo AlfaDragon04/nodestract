@@ -1,0 +1,123 @@
+// ============================================================================
+// LEZIONE 10: PROGETTO INTEGRATO - REGISTRO STUDENTI CON FILE E STATISTICHE
+// ============================================================================
+// Questa ultima lezione mostra un'applicazione reale che unisce tutte le basi:
+// 1. Strutturazione del codice con funzioni di utilita' per calcoli ('calcola_media').
+// 2. Elaborazione di insiemi di dati usando gli array.
+// 3. Salvataggio persistente dei risultati finali in un file di testo.
+// 4. Gestione integrata dell'input/output con messaggi a schermo.
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo il supporto per la lingua italiana.
+// ----------------------------------------------------------------------------
+importa italiano da translate
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo il modulo per la visualizzazione delle informazioni a schermo e l'input.
+// ----------------------------------------------------------------------------
+importa * da nio
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo il modulo 'nfs' per poter salvare il report calcolato sul disco fisso.
+// ----------------------------------------------------------------------------
+importa * da nfs
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Definiamo una funzione 'calcola_media' che riceve una lista di voti e il numero di voti.
+// L'obiettivo della funzione e' sommare tutti i voti e dividere per il numero di elementi.
+// ----------------------------------------------------------------------------
+funzione calcola_media(lista_voti, quantita) {
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Creiamo una variabile 'somma' per accumulare i valori dei singoli voti.
+    // ------------------------------------------------------------------------
+    crea somma = 0
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Creiamo una variabile contatore 'i' per scorrere l'array dal primo elemento (0).
+    // ------------------------------------------------------------------------
+    crea i = 0
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Usiamo il ciclo 'mentre' per scorrere tutti gli elementi fino al limite 'quantita'.
+    // ------------------------------------------------------------------------
+    mentre (i < quantita) {
+        
+        // --------------------------------------------------------------------
+        // SPIEGAZIONE CODICE SOTTOSTANTE:
+        // Aggiungiamo il voto corrente alla variabile accumulatore 'somma'.
+        // --------------------------------------------------------------------
+        somma = somma + lista_voti[i]
+        
+        // --------------------------------------------------------------------
+        // SPIEGAZIONE CODICE SOTTOSTANTE:
+        // Incrementiamo l'indice del ciclo per passare al prossimo studente.
+        // --------------------------------------------------------------------
+        i = i + 1
+    }
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Calcoliamo la media dividendo la somma totale accumulata per la quantita'.
+    // Restituiamo il valore finale decimale calcolato al codice chiamante.
+    // ------------------------------------------------------------------------
+    ritorna somma / quantita
+}
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Iniziamo il programma principale mostrando un messaggio di benvenuto.
+// ----------------------------------------------------------------------------
+stampa("=== Avvio Sistema Registro ===")
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Dichiariamo l'array contenente i voti della classe di stage.
+// ----------------------------------------------------------------------------
+crea voti_studenti = [28, 24, 30, 26, 22]
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Dichiariamo quanti studenti fanno parte della nostra rilevazione.
+// ----------------------------------------------------------------------------
+crea numero_studenti = 5
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Chiamiamo la nostra funzione di utilita' per ottenere la media aritmetica dei voti.
+// Il valore restituito viene memorizzato nella variabile 'media_voti'.
+// ----------------------------------------------------------------------------
+crea media_voti = calcola_media(voti_studenti, numero_studenti)
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Stampiamo a schermo il risultato del calcolo della media.
+// ----------------------------------------------------------------------------
+stampa("Media dei voti degli studenti:", media_voti)
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Prepariamo la stringa di testo che intendiamo salvare permanentemente su file.
+// ----------------------------------------------------------------------------
+crea report = "Media dei voti calcolata: "
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Scriviamo il report statistico all'interno di un file chiamato "report_media.txt".
+// In questo modo, l'insegnante potra' visualizzarlo o inviarlo anche a programma spento.
+// ----------------------------------------------------------------------------
+scrivi("report_media.txt", report)
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Concludiamo l'esecuzione con un messaggio di successo.
+// ----------------------------------------------------------------------------
+stampa("=== Report Salvato con Successo ===")

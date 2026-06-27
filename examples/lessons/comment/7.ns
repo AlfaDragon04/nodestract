@@ -1,0 +1,83 @@
+// ============================================================================
+// LEZIONE 7: GLI ARRAY (VETTORI) E L'ACCESSO AI DATI TRAMITE INDICE
+// ============================================================================
+// Questa lezione introduce le strutture dati collettive: gli array.
+// Gli argomenti principali sono:
+// 1. Cos'è un array (una sequenza ordinata di elementi dello stesso tipo o diversi).
+// 2. La sintassi per creare un array usando le parentesi quadre [].
+// 3. Como accedere ai singoli elementi usando l'indice a base zero (0-based indexing).
+// 4. Come usare un ciclo 'mentre' per scorrere ed elaborare tutti gli elementi.
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo il supporto per la lingua italiana per il codice localizzato.
+// ----------------------------------------------------------------------------
+importa italiano da translate
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo tutti i comandi di input/output.
+// ----------------------------------------------------------------------------
+importa * da nio
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Creiamo un array chiamato 'voti' contenente 5 numeri interi.
+// Gli elementi sono separati da virgole e racchiusi tra parentesi quadre.
+// L'array memorizza i voti di un ipotetico percorso scolastico.
+// ----------------------------------------------------------------------------
+crea voti = [24, 27, 30, 18, 22]
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Creiamo una variabile 'indice' inizializzata a 0.
+// In informatica, gli elementi di un array iniziano a essere contati da ZERO.
+// Quindi il primo elemento (24) e' all'indice 0, il secondo (27) all'indice 1, e cosi' via.
+// ----------------------------------------------------------------------------
+crea indice = 0
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Creiamo una variabile 'numero_elementi' impostata a 5.
+// Questo rappresenta la lunghezza o la dimensione totale del nostro array.
+// Ci serve per sapere quando fermarci con il ciclo ed evitare errori di indice fuori limite.
+// ----------------------------------------------------------------------------
+crea numero_elementi = 5
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Stampiamo una riga di intestazione per preparare l'utente alla lista di dati.
+// ----------------------------------------------------------------------------
+stampa("Elenco dei voti memorizzati:")
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Avviamo un ciclo 'mentre'. La condizione (indice < numero_elementi) garantisce
+// che scorreremo l'array dall'indice 0 all'indice 4.
+// Quando 'indice' arriverà a 5, il ciclo si fermerà perché 5 non è minore di 5.
+// Questo previene l'accesso a celle di memoria inesistenti (Array Index Out of Bounds).
+// ----------------------------------------------------------------------------
+mentre (indice < numero_elementi) {
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Accediamo all'elemento corrente dell'array usando le parentesi quadre.
+    // La sintassi 'voti[indice]' indica al computer di prelevare il valore situato
+    // nella posizione corrispondente al valore attuale di 'indice'.
+    // ------------------------------------------------------------------------
+    crea voto_corrente = voti[indice]
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Stampiamo l'indice e il rispettivo valore corrente letto dall'array.
+    // ------------------------------------------------------------------------
+    stampa("Voto all'indice", indice, "e':", voto_corrente)
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Incrementiamo l'indice di 1 per poter leggere l'elemento successivo
+    // al prossimo ciclo del 'mentre'.
+    // ------------------------------------------------------------------------
+    indice = indice + 1
+}

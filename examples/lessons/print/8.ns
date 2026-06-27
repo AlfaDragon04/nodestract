@@ -1,0 +1,18 @@
+// Lezione 8: Ricorsione
+importa italiano da translate
+importa * da nio
+
+// Funzione ricorsiva per la somma cumulativa
+funzione somma_primi_n(n) {
+    // Caso base: interrompe la ricorsione
+    se (n <= 0) {
+        ritorna 0
+    }
+    // Passo ricorsivo: richiama se stessa con n - 1
+    ritorna n + somma_primi_n(n - 1)
+}
+
+crea numero = 5
+crea risultato = somma_primi_n(numero)
+
+stampa("La somma dei primi", numero, "numeri interi e':", risultato)

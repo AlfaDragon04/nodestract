@@ -1,0 +1,16 @@
+// Lezione 1: Variabili e Stampa
+importa italiano da translate
+importa stampa da nio
+
+// Definizione di una costante (il valore non cambia mai)
+fissa NOME_CORSO = "Stage di Informatica UniGe"
+
+// Definizione di variabili (il valore può cambiare)
+crea eta_studente = 16
+crea altezza = 1.75
+crea messaggio = "Benvenuti allo stage!"
+
+// Stampiamo i valori a schermo
+stampa(messaggio)
+stampa("Nome del corso:", NOME_CORSO)
+stampa("Eta' dello studente:", eta_studente)

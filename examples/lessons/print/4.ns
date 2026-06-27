@@ -1,0 +1,18 @@
+// Lezione 4: Cicli (mentre)
+importa italiano da translate
+importa stampa da nio
+
+crea contatore = 1
+crea limite = 5
+
+stampa("Inizio conteggio:")
+
+// Il ciclo continua finche' contatore e' minore o uguale a limite
+mentre (contatore <= limite) {
+    stampa("Il contatore e' a quota:", contatore)
+    
+    // Incrementiamo il contatore di 1 per passare al giro successivo
+    contatore = contatore + 1
+}
+
+stampa("Fine del conteggio!")

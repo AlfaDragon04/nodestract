@@ -1,0 +1,90 @@
+// ============================================================================
+// LEZIONE 2: OPERATORI DI CONFRONTO E STRUTTURE DECISIONALI (SE / ALTRIMENTI)
+// ============================================================================
+// Questa lezione spiega come consentire al computer di prendere decisioni.
+// Gli argomenti principali sono:
+// 1. Gli operatori di confronto (>=, ==, <=, >, <, !=).
+// 2. Gli operatori logici per unire più condizioni (&& per AND, || per OR).
+// 3. I blocchi condizionali 'se' e 'altrimenti' (if / else).
+// 4. L'importanza dei blocchi di codice racchiusi tra parentesi graffe {}.
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo il supporto della lingua italiana per usare la sintassi localizzata.
+// Questo trasforma la struttura condizionale inglese 'if/else' in 'se/altrimenti'.
+// ----------------------------------------------------------------------------
+importa italiano da translate
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo la funzione 'stampa' per poter mostrare l'esito dei nostri controlli
+// all'utente che esegue il programma.
+// ----------------------------------------------------------------------------
+importa stampa da nio
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Dichiariamo una variabile 'voto_esame' con valore 18 (sufficienza minima).
+// Questa variabile simula il voto ottenuto da uno studente all'università.
+// ----------------------------------------------------------------------------
+crea voto_esame = 18
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Definiamo una variabile 'soglia_sufficienza' impostata su 18.
+// Useremo questa variabile per confrontarla con il voto effettivo dello studente.
+// ----------------------------------------------------------------------------
+crea soglia_sufficienza = 18
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Definiamo una variabile booleana 'lode' impostata su falso.
+// Il tipo booleano può assumere solo due valori logici: 'vero' o 'falso'.
+// Questo ci servirà per i controlli avanzati all'interno della struttura 'se'.
+// ----------------------------------------------------------------------------
+crea lode = falso
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Utilizziamo la parola chiave 'se' per iniziare un blocco condizionale.
+// Tra parentesi tonde inseriamo la condizione logica da verificare.
+// L'operatore '>=' significa "maggiore o uguale".
+// Se la condizione (voto_esame >= soglia_sufficienza) restituisce 'vero',
+// il computer eseguirà le istruzioni all'interno delle prime parentesi graffe {}.
+// ----------------------------------------------------------------------------
+se (voto_esame >= soglia_sufficienza) {
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Questa istruzione viene eseguita solo se il voto è maggiore o uguale a 18.
+    // Viene considerata un'istruzione "annidata" o nidificata nel blocco 'se'.
+    // ------------------------------------------------------------------------
+    stampa("Complimenti! Hai superato l'esame.")
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Creiamo una seconda condizione all'interno della prima (nidificazione).
+    // Verifichiamo se il voto è esattamente uguale a 30 (operatore logico '==')
+    // E contemporaneamente (operatore logico '&&') la variabile 'lode' è 'vero'.
+    // Entrambe le sotto-condizioni devono essere vere affinché si entri in questo blocco.
+    // ------------------------------------------------------------------------
+    se (voto_esame == 30 && lode == vero) {
+        stampa("Risultato eccellente: 30 e Lode!")
+    }
+} 
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// La parola chiave 'altrimenti' (corrispondente a 'else') gestisce il caso alternativo.
+// Se la condizione nel 'se' iniziale era falsa (cioè il voto era minore di 18),
+// il computer salta tutto il blocco 'se' ed esegue il codice qui sotto.
+// ----------------------------------------------------------------------------
+altrimenti {
+    
+    // ------------------------------------------------------------------------
+    // SPIEGAZIONE CODICE SOTTOSTANTE:
+    // Questo messaggio viene stampato solo quando la condizione principale è falsa.
+    // Aiuta lo studente a capire che l'esame deve essere ripetuto.
+    // ------------------------------------------------------------------------
+    stampa("Purtroppo non hai superato l'esame. Riprova!")
+}

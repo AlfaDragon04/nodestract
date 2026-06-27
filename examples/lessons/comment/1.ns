@@ -1,0 +1,85 @@
+// ============================================================================
+// LEZIONE 1: VARIABILI, TIPI DI DATI E LA STAMPA A SCHERMO
+// ============================================================================
+// Questa prima lezione introduce i concetti fondamentali di ogni linguaggio:
+// 1. L'importazione delle librerie (in questo caso la lingua italiana e l'input/output).
+// 2. La dichiarazione di variabili mutabili (usando la parola chiave 'crea').
+// 3. La dichiarazione di costanti immutabili (usando la parola chiave 'fissa').
+// 4. L'istruzione di stampa per mostrare informazioni all'utente ('stampa').
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Iniziamo dicendo all'interprete di utilizzare le regole di traduzione in italiano.
+// Questa riga è indispensabile nel nostro ambiente personalizzato 'NodeStract'
+// perché permette di scrivere il codice usando parole italiane anziché inglesi.
+// È il primo passo per rendere il codice simile a uno pseudocodice in lingua madre.
+// ----------------------------------------------------------------------------
+importa italiano da translate
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Importiamo la funzione di visualizzazione a schermo ('stampa') dal modulo 'nio'.
+// 'nio' sta per Node Input/Output ed è la libreria che si occupa di far comunicare
+// il computer con l'esterno, ad esempio visualizzando testo nel terminale.
+// Senza questo comando, il computer non saprebbe come interpretare il comando 'stampa'.
+// ----------------------------------------------------------------------------
+importa stampa da nio
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Definiamo una COSTANTE usando la parola chiave 'fissa'.
+// Le costanti sono contenitori di dati il cui valore NON può cambiare durante
+// l'esecuzione del programma. È buona pratica scriverle in MAIUSCOLO.
+// Qui creiamo la costante 'NOME_CORSO' e le assegniamo una stringa di testo.
+// Le stringhe di testo vanno sempre racchiuse tra virgolette doppie ("...").
+// ----------------------------------------------------------------------------
+fissa NOME_CORSO = "Stage di Informatica UniGe"
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Definiamo una VARIABILE mutabile usando la parola chiave 'crea'.
+// A differenza di 'fissa', il valore di una variabile può essere modificato
+// successivamente nel programma (come faremo più avanti con 'raggio').
+// Inizializziamo 'eta_studente' con il valore intero 16.
+// ----------------------------------------------------------------------------
+crea eta_studente = 16
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Creiamo un'altra variabile per memorizzare l'altezza (un numero decimale).
+// Nei linguaggi di programmazione, per i numeri decimali si usa il punto '.'
+// al posto della virgola per separare la parte intera da quella decimale.
+// ----------------------------------------------------------------------------
+crea altezza = 1.75
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Creiamo una variabile che memorizza una stringa, cioè una sequenza di caratteri.
+// Questo ci servirà per dare un messaggio di benvenuto dinamico all'utente.
+// ----------------------------------------------------------------------------
+crea messaggio = "Benvenuti allo stage!"
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Usiamo la funzione 'stampa' importata da 'nio' per visualizzare il messaggio.
+// La funzione prende come parametro la variabile 'messaggio' e ne mostra il valore.
+// Quando eseguiamo questa riga, sullo schermo apparirà: Benvenuti allo stage!
+// ----------------------------------------------------------------------------
+stampa(messaggio)
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Possiamo passare più parametri alla funzione 'stampa' separandoli con virgole.
+// Il programma li visualizzerà uno dopo l'altro separandoli con uno spazio.
+// Qui stampiamo una descrizione testuale fissa seguita dalla costante NOME_CORSO.
+// ----------------------------------------------------------------------------
+stampa("Nome del corso:", NOME_CORSO)
+
+// ----------------------------------------------------------------------------
+// SPIEGAZIONE CODICE SOTTOSTANTE:
+// Stampiamo l'età dello studente combinando testo fisso e variabile numerica.
+// Questo mostra come le variabili numeriche vengano convertite automaticamente
+// in testo al momento della visualizzazione.
+// ----------------------------------------------------------------------------
+stampa("Eta' dello studente:", eta_studente)
