@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 pub struct TranslationEngine {
     // Maps lowercase, accent-normalized keywords to a list of (canonical, dependency) candidates to support homonyms across languages
-    keyword_map: HashMap<String, Vec<(String, String)>>,
+    pub(crate) keyword_map: HashMap<String, Vec<(String, String)>>,
     // Maps canonical keywords to their required import module
     module_map: HashMap<String, String>,
 }
@@ -130,7 +130,22 @@ impl TranslationEngine {
 
     /// Returns the module name required for a canonical keyword (e.g. "sin" -> "nmath", "let" -> "").
     pub fn required_module(&self, canonical_keyword: &str) -> &str {
-        self.module_map.get(canonical_keyword).map(|s| s.as_str()).unwrap_or("")
+        if let Some(module) = self.module_map.get(canonical_keyword) {
+            if module == "english"
+                || module == "italian"
+                || module == "spanish"
+                || module == "french"
+                || module == "german"
+                || module == "portuguese"
+                || module == "romanian"
+            {
+                ""
+            } else {
+                module.as_str()
+            }
+        } else {
+            ""
+        }
     }
 
     /// Helper to identify if a word (independent of active imports) matches a known built-in function name.

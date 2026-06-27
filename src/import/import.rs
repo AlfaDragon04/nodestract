@@ -98,7 +98,7 @@ mod tests {
 
         // Invalid member-parent combination (e.g. import italian from english)
         assert!(!manager2.import_member("italian", "english"));
-        assert!(!manager2.is_member_active("italian", "english"));
+        assert!(!manager2.is_parent_active("english"));
 
         // Valid math import
         assert!(manager2.import_member("sin", "nmath"));

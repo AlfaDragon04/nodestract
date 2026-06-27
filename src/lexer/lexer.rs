@@ -68,7 +68,7 @@ impl Lexer {
     }
 
     /// Tokenizes the input string into a list of generic Tokens.
-    pub fn tokenize(&mut self, translation: &crate::engine::translate::TranslationEngine, import_manager: &crate::engine::import::ImportManager) -> Vec<Token> {
+    pub fn tokenize(&mut self, translation: &crate::engine::translate::TranslationEngine, filtered_engine: &crate::engine::filter::FilteredEngine) -> Vec<Token> {
         let mut tokens = Vec::new();
         while self.position < self.input.len() {
             let char = self.input[self.position];
@@ -131,7 +131,7 @@ impl Lexer {
 
             // 7. Match identifiers/keywords
             if char.is_alphabetic() || char == '_' {
-                tokens.push(self.read_identifier(translation, import_manager));
+                tokens.push(self.read_identifier(translation, filtered_engine));
                 continue;
             }
 
@@ -157,15 +157,15 @@ impl Lexer {
         true
     }
 
-    fn read_identifier(&mut self, translation: &crate::engine::translate::TranslationEngine, import_manager: &crate::engine::import::ImportManager) -> Token {
+    fn read_identifier(&mut self, translation: &crate::engine::translate::TranslationEngine, filtered_engine: &crate::engine::filter::FilteredEngine) -> Token {
         let start = self.position;
         while self.position < self.input.len() && (self.input[self.position].is_alphanumeric() || self.input[self.position] == '_') {
             self.position += 1;
         }
         let text: String = self.input[start..self.position].iter().collect();
 
-        // Translate the keyword to its canonical English key, or keep it as Identifier
-        if let Some(canonical) = translation.lookup(&text, import_manager) {
+        // Translate the keyword using the filtered engine
+        if let Some(canonical) = filtered_engine.lookup(&text, translation) {
             Token::Keyword(canonical.to_string())
         } else {
             Token::Identifier(text)
