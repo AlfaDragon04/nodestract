@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 use std::collections::{HashMap, HashSet};
 
 pub struct ImportManager {
@@ -29,8 +28,11 @@ impl ImportManager {
 
     /// Import an entire parent module (e.g. `import nio`).
     pub fn import_all(&mut self, parent: &str) -> bool {
-        if self.allowed_imports.contains_key(parent) {
+        if let Some(members) = self.allowed_imports.get(parent) {
             self.active_parents.insert(parent.to_string());
+            for m in members {
+                self.active_members.insert(m.clone());
+            }
             true
         } else {
             false
@@ -64,11 +66,9 @@ impl ImportManager {
         }
     }
 
-    /// Check if a specific member is active. A member is active if its parent module is imported fully
-    /// or if the member was imported individually.
-    pub fn is_member_active(&self, member: &str, parent: &str) -> bool {
-        self.active_parents.contains(parent) && (self.active_members.contains(member) || !self.active_members.is_empty())
-            || self.active_members.contains(member)
+    /// Check if a specific member is active.
+    pub fn is_member_active(&self, member: &str, _parent: &str) -> bool {
+        self.active_members.contains(member)
     }
 
     /// Check if a parent module is active.
@@ -87,18 +87,18 @@ mod tests {
 
         // Wildcard import (import * from translate)
         assert!(manager.import_member("*", "translate"));
-        assert!(manager.is_member_active("it", "translate"));
-        assert!(manager.is_member_active("en", "translate"));
+        assert!(manager.is_member_active("italian", "translate"));
+        assert!(manager.is_member_active("english", "translate"));
 
         // Valid member import
         let mut manager2 = ImportManager::new();
-        assert!(manager2.import_member("it", "translate"));
-        assert!(manager2.is_member_active("it", "translate"));
-        assert!(!manager2.is_member_active("en", "translate"));
+        assert!(manager2.import_member("italian", "translate"));
+        assert!(manager2.is_member_active("italian", "translate"));
+        assert!(!manager2.is_member_active("english", "translate"));
 
-        // Invalid member-parent combination (e.g. import it from en)
-        assert!(!manager2.import_member("it", "en"));
-        assert!(!manager2.is_member_active("it", "en"));
+        // Invalid member-parent combination (e.g. import italian from english)
+        assert!(!manager2.import_member("italian", "english"));
+        assert!(!manager2.is_member_active("italian", "english"));
 
         // Valid math import
         assert!(manager2.import_member("sin", "nmath"));

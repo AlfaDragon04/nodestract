@@ -1,0 +1,13 @@
+import * from nio
+
+function complex_validation(x, y) {
+    if (x > y) {
+        while (x > 0) {
+            let data = [10, 20, 30) // Subtle syntax error: opened with '[', closed with ')'
+            print(data)
+            x = x - 1
+        }
+    }
+}
+
+complex_validation(5, 2)

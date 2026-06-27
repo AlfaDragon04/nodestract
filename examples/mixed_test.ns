@@ -1,19 +1,39 @@
+importa * da translate
 importa * da nio
 importa * da nmath
+importa * da nfs
 
-erstelle x = 5
-crea y = 10
-creaza z = 15
+fissa LIMIT = 200
+erstelle counter = 0
 
-funktion test() {
-    mentre x < 10 {
-        se x == 7 {
-            afiseaza("x is 7")
-        } altrimenti {
-            stampa("x is not 7")
+// German function definition
+funktion test_math(a, b) {
+    creer val = a * b
+    renvoyer val
+}
+
+// French function definition
+fonction check_status(val) {
+    si (val > LIMIT) {
+        mostrar("Status: High")
+        altfel {
+            ausgeben("Status: Normal")
         }
-        x = x + 1
     }
 }
 
-test()
+// Spanish and Italian mixed loop
+funcao execute_loop() {
+    mentre (counter < 10) {
+        creaza result = test_math(counter, 25)
+        check_status(result)
+        
+        se (result == LIMIT) {
+            afiseaza("Exact limit reached!")
+        }
+        
+        counter = counter + 1
+    }
+}
+
+execute_loop()

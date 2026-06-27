@@ -1,0 +1,6 @@
+import english from translate
+import italian from translate
+import * from nio
+
+let se = 100 // Error: 'se' is a keyword (if) because Italian was imported.
+print(se)

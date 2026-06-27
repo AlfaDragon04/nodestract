@@ -1,5 +1,5 @@
 {
-  "translate": ["en", "it", "es", "fr", "de", "pt", "ro"],
+  "translate": ["english", "italian", "spanish", "french", "german", "portuguese", "romanian"],
   "nio": ["print", "input"],
   "nfs": ["open", "read", "write", "delete"],
   "nnet": ["fetch", "connect", "send", "receive"],

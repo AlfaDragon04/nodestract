@@ -48,5 +48,12 @@
   "max": ["maximo", "nmath"],
   "abs": ["absoluto", "nmath"],
   "log": ["logaritmo", "nmath"],
-  "pow": ["potencia", "nmath"]
+  "pow": ["potencia", "nmath"],
+  "english": ["ingles", ""],
+  "italian": ["italiano", ""],
+  "spanish": ["espanol", ""],
+  "french": ["frances", ""],
+  "german": ["aleman", ""],
+  "portuguese": ["portugues", ""],
+  "romanian": ["rumano", ""]
 }

@@ -1,46 +1,70 @@
+importa italiano da translate
 importa * da nio
 importa * da nmath
 importa * da nfs
 
-fissa MAX_LIMIT = 100
-crea contatore = 0
-crea totale = 0
+fissa GLOBAL_LIMIT = 500
+crea base_value = 100
 
-funzione calcola_quadrato(x) {
-    crea risultato = x * x
+funzione calcola_fattoriale(n) {
+    se (n <= 1) {
+        ritorna 1
+    }
+    ritorna n * calcola_fattoriale(n - 1)
+}
+
+funzione verifica_logica(x, y, z) {
+    crea risultato = falso
+    se ((x > y && y > z) || (x == base_value)) {
+        risultato = vero
+    } altrimenti {
+        risultato = falso
+    }
     ritorna risultato
 }
 
-funzione esegui_test() {
-    stampa("Avvio del test di base in Italiano...")
+funzione esegui_pipeline_complessa() {
+    stampa("=== AVVIO PIPELINE ===")
     
-    mentre contatore < 10 {
-        crea valore = contatore + 1
-        crea quadrato = calcola_quadrato(valore)
-        stampa("Valore:", valore, "Quadrato:", quadrato)
-        
-        se quadrato > 50 {
-            stampa("Il quadrato e maggiore di 50!")
-        } altrimenti {
-            stampa("Il quadrato e minore o uguale a 50.")
+    crea somma_matrice = 0
+    crea i = 0
+    mentre (i < 5) {
+        crea j = 0
+        mentre (j < 5) {
+            crea valore_cella = calcola_fattoriale(i) + sen(j * 0.5)
+            somma_matrice = somma_matrice + valore_cella
+            
+            se (valore_cella > GLOBAL_LIMIT) {
+                stampa("Limite superato alla cella:", i, j, "Valore:", valore_cella)
+            } altrimenti {
+                crea controllo = verifica_logica(valore_cella, i, j)
+                se (controllo) {
+                    stampa("Logica verificata alla cella:", i, j)
+                }
+            }
+            j = j + 1
         }
-        
-        contatore = contatore + 1
+        i = i + 1
     }
     
-    crea completato = vero
-    se completato {
-        stampa("Ciclo completato.")
+    stampa("Somma Matrice:", somma_matrice)
+    
+    crea array_campione = [10, 20, 30, 40, 50]
+    crea indice = 0
+    mentre (indice < 5) {
+        crea val = array_campione[indice]
+        stampa("Valore dell array all indice:", indice, "e", val)
+        indice = indice + 1
     }
 
-    crea val = sen(3.14)
-    stampa("Valore Seno:", val)
+    crea contenuto_file = leggi("data_source.txt")
+    se (contenuto_file == nullo) {
+        scrivi("data_source.txt", "INITIAL_DATA")
+    } altrimenti {
+        stampa("Dati caricati:", contenuto_file)
+    }
 
-    crea valore_casuale = casuale()
-    stampa("Valore Casuale:", valore_casuale)
-    
-    crea contenuto = leggi("test.txt")
-    stampa("Contenuto file:", contenuto)
+    stampa("=== PIPELINE COMPLETATA ===")
 }
 
-esegui_test()
+esegui_pipeline_complessa()

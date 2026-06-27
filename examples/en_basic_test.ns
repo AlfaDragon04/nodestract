@@ -1,3 +1,4 @@
+import english from translate
 import * from nio
 import * from nmath
 import * from nfs
