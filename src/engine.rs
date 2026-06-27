@@ -33,15 +33,9 @@ pub struct Engine {
 impl Engine {
     /// Create a new Engine instance.
     pub fn new() -> Self {
-        println!("[Engine] Initializing Translation Engine (supporting all active languages)...");
         let translation_engine = TranslationEngine::new();
-        
-        println!("[Engine] Initializing Import Manager...");
         let import_manager = ImportManager::new();
-
-        println!("[Engine] Initializing Runtime Interpreter...");
         let interpreter = Interpreter::new();
-
         Self {
             translation_engine,
             import_manager,
@@ -52,19 +46,16 @@ impl Engine {
     /// Runs the complete NodeStract pipeline for a given source code.
     pub fn run(&mut self, source: &str) {
         // 1. Extract and validate imports (line-by-line)
-        println!("[Engine] [1/3] Validating and extracting import header...");
         let (stripped_source, active_import_manager) = match check::validate_imports(source, &self.translation_engine) {
             Ok(res) => res,
             Err(err_msg) => {
                 crate::welcome::show_error(&err_msg);
-                println!("[Engine] Execution aborted due to import validation errors.");
                 return;
             }
         };
         self.import_manager = active_import_manager;
 
         // 2. Build filtered engine (active keywords vocabulary)
-        println!("[Engine] [2/3] Filtering active vocabulary for tokenization...");
         let filtered_engine = filter::FilteredEngine::new(&self.translation_engine, &self.import_manager);
 
         // 3. Tokenize the stripped source code
@@ -80,7 +71,6 @@ impl Engine {
                             "Import Error: Built-in function '{}' used but its library module '{}' was not imported",
                             name, module
                         ));
-                        println!("[Engine] Execution aborted due to missing imports.");
                         return;
                     }
                 }
@@ -88,34 +78,20 @@ impl Engine {
         }
 
         // 4. Run Parser for structural and delimiter validation
-        println!("[Engine] [3/3] Starting Parser (Syntax Validation)...");
         let mut parser = Parser::new(final_tokens.clone());
         match parser.parse() {
             Ok(program) => {
-                println!("[Engine] Syntax and imports are flawless! Displaying Tokens (stripped header):");
-                let token_reprs: Vec<String> = final_tokens
-                    .iter()
-                    .map(|t| t.to_string_repr())
-                    .collect();
-                
-                println!("--------------------------------------------------");
-                println!("[ {} ]", token_reprs.join(" | "));
-                println!("--------------------------------------------------");
-
-                println!("[Engine] Starting Runtime Interpreter...");
                 self.interpreter = Interpreter::new();
                 self.interpreter.run(program);
             }
             Err(err_msg) => {
                 crate::welcome::show_error(&format!("Syntax Error: {}", err_msg));
-                println!("[Engine] Execution aborted due to syntax errors.");
             }
         }
     }
 
     /// Reads a file from disk and runs the compiler pipeline.
     pub fn run_file(&mut self, filename: &str) {
-        println!("[Engine] Loading file: {}", filename);
         match std::fs::read_to_string(filename) {
             Ok(content) => {
                 self.run(&content);

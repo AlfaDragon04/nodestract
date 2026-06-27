@@ -15,9 +15,9 @@ funktion test_math(a, b) {
 // French function definition
 fonction check_status(val) {
     si (val > LIMIT) {
-        mostrar("Status: High")
+        mostrar("Status High")
         altfel {
-            ausgeben("Status: Normal")
+            ausgeben("Status Normal")
         }
     }
 }

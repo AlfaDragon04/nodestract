@@ -1,7 +1,0 @@
-import english from translate
-import * from nio
-
-let x = 10
-se (x > 5) { // Error: 'se' is used but Italian ('it') was not imported. It is treated as an identifier.
-    print("x is greater than 5")
-}

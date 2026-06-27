@@ -1,7 +1,0 @@
-import english from translate
-import * from nio
-
-let x = 10
-import * from nmath // Error: Import statement not allowed after non-import code
-
-print(x)
