@@ -3,6 +3,8 @@ use std::collections::HashMap;
 pub struct TranslationEngine {
     // Maps lowercase, accent-normalized keywords to their canonical English forms
     keyword_map: HashMap<String, String>,
+    // Maps canonical keywords to their required import module (e.g. "nmath", "nio", or "")
+    module_map: HashMap<String, String>,
 }
 
 impl TranslationEngine {
@@ -10,6 +12,7 @@ impl TranslationEngine {
     pub fn new(lang: &str) -> Self {
         let mut engine = Self {
             keyword_map: HashMap::new(),
+            module_map: HashMap::new(),
         };
         // Always load English as fallback/standard
         engine.load_language("en");
@@ -35,12 +38,11 @@ impl TranslationEngine {
             return;
         }
 
-        if let Ok(map) = serde_json::from_str::<HashMap<String, Vec<String>>>(json_content) {
-            for (canonical_kw, translations) in map {
-                for translation in translations {
-                    let normalized = self.normalize(&translation);
-                    self.keyword_map.insert(normalized, canonical_kw.clone());
-                }
+        if let Ok(map) = serde_json::from_str::<HashMap<String, (String, String)>>(json_content) {
+            for (canonical_kw, (translation, module)) in map {
+                let normalized = self.normalize(&translation);
+                self.keyword_map.insert(normalized, canonical_kw.clone());
+                self.module_map.insert(canonical_kw, module);
             }
         }
     }
@@ -68,10 +70,15 @@ impl TranslationEngine {
         normalized
     }
 
-    /// Resolves a localized keyword to its canonical English form (e.g. "function" -> "func", "se" -> "if").
+    /// Resolves a localized keyword to its canonical English form (e.g. "funcion" -> "function").
     pub fn lookup(&self, word: &str) -> Option<&str> {
         let normalized = self.normalize(word);
         self.keyword_map.get(&normalized).map(|s| s.as_str())
+    }
+
+    /// Returns the module name required for a canonical keyword (e.g. "sin" -> "nmath", "let" -> "").
+    pub fn required_module(&self, canonical_keyword: &str) -> &str {
+        self.module_map.get(canonical_keyword).map(|s| s.as_str()).unwrap_or("")
     }
 }
 
@@ -97,6 +104,9 @@ mod tests {
         assert_eq!(engine.lookup("fetch"), Some("fetch"));
         assert_eq!(engine.lookup("sin"), Some("sin"));
         assert_eq!(engine.lookup("not_a_keyword"), None);
+        
+        assert_eq!(engine.required_module("sin"), "nmath");
+        assert_eq!(engine.required_module("print"), "nio");
+        assert_eq!(engine.required_module("let"), "");
     }
 }
-
