@@ -4,12 +4,19 @@ importa * da nio
 fissa COSTANTE = 42
 stampa("Costante iniziale:", COSTANTE)
 
-// Tentativo di riassegnazione
-COSTANTE = 99
+crea errore_rilevato = falso
+
+prova {
+    // Tentativo di riassegnazione
+    COSTANTE = 99
+} cattura (e) {
+    errore_rilevato = vero
+    stampa("Errore catturato con successo:", e)
+}
 
 stampa("Costante finale:", COSTANTE)
-se (COSTANTE == 42) {
+se (errore_rilevato == vero && COSTANTE == 42) {
     stampa("Constant protection OK")
 } altrimenti {
-    stampa("FAIL: Constant was modified to", COSTANTE)
+    stampa("FAIL: Constant protection check failed or constant modified")
 }

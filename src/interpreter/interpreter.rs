@@ -92,7 +92,9 @@ impl Interpreter {
         for scope in self.scopes.iter_mut().rev() {
             if let Some(entry) = scope.get_mut(&name) {
                 if !entry.is_mutable {
-                    println!("Runtime Error: Cannot assign to lock (constant) '{}'.", name);
+                    let err_msg = format!("Cannot assign to lock (constant) '{}'.", name);
+                    println!("Runtime Error: {}", err_msg);
+                    self.exception = Some(Value::String(err_msg));
                     return;
                 }
                 entry.value = value;

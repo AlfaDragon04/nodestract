@@ -83,6 +83,9 @@ impl Engine {
             Ok(program) => {
                 self.interpreter = Interpreter::new();
                 self.interpreter.run(program);
+                if let Some(ref exc) = self.interpreter.exception {
+                    crate::welcome::show_error(&format!("Uncaught Exception: {:?}", exc));
+                }
             }
             Err(err_msg) => {
                 crate::welcome::show_error(&format!("Syntax Error: {}", err_msg));
