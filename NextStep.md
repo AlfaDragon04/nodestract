@@ -11,15 +11,6 @@ Questo documento raccoglie tutte le anomalie, i bug, le omissioni rispetto alle 
 * **Perché è un problema**: Viola il comportamento atteso di un linguaggio procedurale/funzionale moderno (ispirato a JS/Python come da `spec.md`), che dovrebbe garantire lo scoping lessicale.
 * **Soluzione consigliata**: Associare a ciascuna funzione lo scope in cui è stata definita (closure) o isolare l'ambiente di esecuzione locale delle funzioni, limitando l'accesso solo allo scope globale e a quello locale della funzione stessa, escludendo lo stack delle chiamate intermedie.
 
-### ~~1.2 Gestione degli Errori per Riassegnazione di Costanti (`const` / `fissa`)~~ (Risolto)
-* ~~**Descrizione del problema**: In `src/interpreter/interpreter.rs`, la funzione `set_var` stampa semplicemente a terminale un messaggio di errore (`Runtime Error: Cannot assign to lock (constant) '...'`) ma **non interrompe** l'esecuzione del programma né solleva un'eccezione catturabile dal blocco `try/catch`. Il programma continua a girare ignorando silenziosamente la riassegnazione fallita.~~
-* ~~**Perché è un problema**: Questo comportamento può portare a bug silenziosi e difficili da rilevare in fase di esecuzione.~~
-* ~~**Soluzione consigliata**: Sollevare un errore fatale o inserire un'eccezione (`self.exception = Some(...)`) che blocchi immediatamente l'interprete o venga propagata verso un gestore di eccezioni.~~
-
-### 1.3 Mancata Validazione Semantica di `break` e `continue`
-* **Descrizione del problema**: Il parser accetta la presenza di parole chiave per interrompere o continuare i cicli (`break` e `continue`) in qualunque punto del codice, anche al di fuori dei cicli `mentre`/`per` (ad esempio, all'interno del corpo di una funzione o a livello globale).
-* **Perché è un problema**: Se eseguiti all'esterno di un ciclo, questi costrutti alterano i flag di controllo del flusso dell'interprete (`loop_break`, `loop_continue`), rischiando di interrompere inaspettatamente cicli situati nei contesti dei chiamanti.
-* **Soluzione consigliata**: Introdurre un controllo nel parser (o un passo di analisi semantica post-parsing) che tenga traccia se ci si trova all'interno di un loop durante la discesa ricorsiva.
 
 ---
 

@@ -20,10 +20,16 @@ impl Parser {
                     "try" => self.parse_try_catch_statement(),
                     "throw" => self.parse_throw_statement(),
                     "break" => {
+                        if self.loop_depth == 0 {
+                            return Err("Syntax Error: 'break' (interrompi) is only allowed inside loops".to_string());
+                        }
                         self.advance();
                         Ok(Statement::Break)
                     }
                     "continue" => {
+                        if self.loop_depth == 0 {
+                            return Err("Syntax Error: 'continue' (continua) is only allowed inside loops".to_string());
+                        }
                         self.advance();
                         Ok(Statement::Continue)
                     }
@@ -100,7 +106,10 @@ impl Parser {
             self.consume(&Token::Delimiter(")".to_string()), "Expected ')' after condition")?;
         }
         self.consume(&Token::Delimiter("{".to_string()), "Expected '{' before while body")?;
-        let body = self.parse_block()?;
+        self.loop_depth += 1;
+        let body_res = self.parse_block();
+        self.loop_depth -= 1;
+        let body = body_res?;
         Ok(Statement::WhileStatement { condition, body })
     }
 
@@ -133,7 +142,10 @@ impl Parser {
             self.consume(&Token::Delimiter(")".to_string()), "Expected ')' after for loop range")?;
         }
         self.consume(&Token::Delimiter("{".to_string()), "Expected '{' before for body")?;
-        let body = self.parse_block()?;
+        self.loop_depth += 1;
+        let body_res = self.parse_block();
+        self.loop_depth -= 1;
+        let body = body_res?;
         Ok(Statement::ForStatement { iterator, start, end, body })
     }
 
@@ -262,7 +274,11 @@ impl Parser {
         }
         self.consume(&Token::Delimiter(")".to_string()), "Expected ')' after parameters")?;
         self.consume(&Token::Delimiter("{".to_string()), "Expected '{' before function body")?;
-        let body = self.parse_block()?;
+        let old_loop_depth = self.loop_depth;
+        self.loop_depth = 0;
+        let body_res = self.parse_block();
+        self.loop_depth = old_loop_depth;
+        let body = body_res?;
         Ok(Statement::FunctionDecl { is_async, name, params, body })
     }
 
