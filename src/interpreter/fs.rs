@@ -30,3 +30,14 @@ pub fn write_file(path: &str, content: &str) -> Value {
         Err(_) => Value::Boolean(false),
     }
 }
+
+pub fn delete_file(path: &str) -> Value {
+    if !path.ends_with(".nso") && !path.ends_with(".txt") {
+        println!("FS Error: Only .nso or .txt files allowed.");
+        return Value::Boolean(false);
+    }
+    match fs::remove_file(path) {
+        Ok(_) => Value::Boolean(true),
+        Err(_) => Value::Boolean(false),
+    }
+}

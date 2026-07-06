@@ -54,6 +54,14 @@ impl Interpreter {
                     Value::Boolean(false)
                 }
             }
+            "delete" => {
+                if let Some(path_expr) = args.get(0) {
+                    let path_val = self.eval_expression(path_expr);
+                    fs::delete_file(&path_val.to_string())
+                } else {
+                    Value::Boolean(false)
+                }
+            }
 
             // Math operations
             "sin" => {

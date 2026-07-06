@@ -1,0 +1,23 @@
+importa italiano da translate
+importa * da nio
+importa * da nfs
+
+crea file_test = "temp_test_fs.txt"
+
+// 1. Scrittura
+crea scrivi_ok = scrivi(file_test, "Contenuto del file di prova")
+stampa("Scrittura riuscita:", scrivi_ok)
+
+// 2. Lettura e verifica
+crea contenuto = leggi(file_test)
+stampa("Contenuto letto:", contenuto)
+
+// 3. Eliminazione
+crea elimina_ok = elimina(file_test)
+stampa("Eliminazione riuscita:", elimina_ok)
+
+se (scrivi_ok == vero && contenuto == "Contenuto del file di prova" && elimina_ok == vero) {
+    stampa("File system ops OK")
+} altrimenti {
+    stampa("FAIL: FS ops verification failed")
+}

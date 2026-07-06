@@ -139,6 +139,7 @@ stampa("Ciao", nome)
 Consente l'interazione con i file locali (limitata a file `.txt` e `.nso` per motivi di sicurezza).
 * **`leggi` (canonical: `read`)**: Legge il contenuto testuale di un file.
 * **`scrivi` (canonical: `write`)**: Scrive o sovrascrive un file con il testo fornito.
+* **`elimina` (canonical: `delete`)**: Elimina il file specificato dal disco.
 
 ```ns
 importa * da nfs

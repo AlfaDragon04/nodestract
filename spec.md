@@ -26,7 +26,7 @@ NodeStract supporta fino a 7 lingue contemporaneamente (`english`, `italian`, `s
 
 Le funzioni predefinite (matematiche, I/O e file system) appartengono a moduli specifici:
 - **`nio` (Input/Output)**: `print`, `input`
-- **`nfs` (File System)**: `open`, `read`, `write`, `delete`
+- **`nfs` (File System)**: `read`, `write`, `delete`
 - **`nmath` (Matematica)**: `sin`, `cos`, `sqrt`, `random`, `round`, `min`, `max`, `abs`, `log`, `pow`
 
 Per poter utilizzare una di queste funzioni, è obbligatorio importare il relativo modulo (es. `import * from nmath` oppure `import sin from nmath`). L'uso di una funzione built-in senza aver importato il modulo corrispondente causerà un errore di compilazione.

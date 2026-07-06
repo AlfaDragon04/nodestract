@@ -20,11 +20,10 @@ Trattandosi di un prototipo didattico (Tipologia 2), l'attuale implementazione p
 * **Descrizione**: L'interprete gestisce gli ambienti delle funzioni inserendo lo scope locale sopra lo stack di quelli correnti. Questo fa sì che le variabili locali della funzione chiamante siano visibili alla funzione chiamata (scoping dinamico).
 * **Impatto**: Il comportamento devia dallo standard dei moderni linguaggi a cui NodeStract si ispira (JavaScript/Python), i quali adottano lo scoping lessicale.
 
-### 2.2 Omissione di Funzioni Standard della Specifica
-* **Descrizione**: Alcune funzioni built-in indicate nella documentazione dei requisiti del progetto (`spec.md`) e inserite nei dizionari di traduzione, non sono state collegate nel codice dell'interprete:
-  * `open` (apri) e `delete` (elimina) per il filesystem (`nfs`).
-  * `connect` (connetti) e `receive` (ricevi) per la rete (`nnet`).
-* **Impatto**: Gli studenti o gli utenti che provano a utilizzare queste funzioni riscontreranno errori di compilazione/esecuzione, nonostante la documentazione ufficiale le indichi come presenti.
+### 2.2 Rimozione delle Omissioni e Completamento delle Built-in
+* **Descrizione**: Alcune funzioni built-in originariamente indicate nella documentazione dei requisiti del progetto (`spec.md`) erano assenti o ridondanti:
+  * `delete` (elimina) per il filesystem (`nfs`) è stata completata con successo.
+  * Le funzioni `open` (apri), `connect` (connetti) e `receive` (ricevi) sono state rimosse dalle specifiche in quanto obsolete/ridondanti (la rete ad alto livello utilizza già `fetch`/`send` su HTTP, rendendo i TCP socket fuori scopo per un linguaggio didattico procedurale).
 
 ### 2.3 Perdita del Tracciamento Corretto delle Righe negli Errori
 * **Descrizione**: La rimozione fisica delle righe contenenti gli `import` all'inizio del file (eseguita da `check.rs`) fa sì che le righe successive vengano spostate verso l'alto nel codice passato al compilatore.
