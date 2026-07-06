@@ -108,6 +108,9 @@ pub fn validate_imports(
             if parent == "translate" {
                 has_imported_any_language = true;
             }
+
+            // Preserve line count by replacing import line with an empty line
+            stripped_lines.push("".to_string());
         } else {
             // First non-import line found. All future imports are illegal.
             imports_ended = true;
@@ -123,4 +126,27 @@ pub fn validate_imports(
     }
 
     Ok((stripped_lines.join("\n"), import_manager))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_line_count_preservation() {
+        let source = "importa italiano da translate\n// Un commento\n\nscrivi(\"ciao\")";
+        let translation_engine = TranslationEngine::new();
+        let (stripped, _) = validate_imports(source, &translation_engine).unwrap();
+        
+        let original_lines: Vec<&str> = source.lines().collect();
+        let stripped_lines: Vec<&str> = stripped.lines().collect();
+        
+        assert_eq!(original_lines.len(), stripped_lines.len());
+        // Verify that the import line is now empty
+        assert_eq!(stripped_lines[0], "");
+        // Verify that the subsequent lines are intact and on the same line index
+        assert_eq!(stripped_lines[1], "// Un commento");
+        assert_eq!(stripped_lines[2], "");
+        assert_eq!(stripped_lines[3], "scrivi(\"ciao\")");
+    }
 }

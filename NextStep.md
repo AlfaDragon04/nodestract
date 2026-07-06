@@ -40,10 +40,10 @@ Le seguenti funzioni sono definite in `spec.md` (e mappate nei dizionari di trad
 
 ## 3. Disallineamento dei Numeri di Riga negli Errori
 
-### 3.1 Rimozione Fisica delle Righe di Import in `check.rs`
-* **Descrizione del problema**: Durante la fase iniziale di validazione, `src/import/check.rs` filtra il codice sorgente eliminando completamente le righe che contengono istruzioni di importazione (`importa ... da ...`), restituendo un sorgente "pulito" al lexer.
-* **Perché è un problema**: Rimuovendo le righe fisicamente anziché sostituirle con righe vuote (es. `\n`), tutti gli errori di sintassi o di runtime segnalati successivamente dal parser o dall'interprete avranno numeri di riga **sfalsati** all'indietro di un numero pari agli import eseguiti.
-* **Soluzione consigliata**: Modificare `check.rs` in modo che, quando rileva e convalida una riga di import, inserisca una riga vuota (o un commento segnaposto) in `stripped_lines` anziché saltare del tutto il push. In questo modo la corrispondenza 1-a-1 dei numeri di riga viene preservata.
+### ~~3.1 Rimozione Fisica delle Righe di Import in `check.rs`~~ (Risolto)
+* ~~**Descrizione del problema**: Durante la fase iniziale di validazione, `src/import/check.rs` filtra il codice sorgente eliminando completamente le righe che contengono istruzioni di importazione (`importa ... da ...`), restituendo un sorgente "pulito" al lexer.~~
+* ~~**Perché è un problema**: Rimuovendo le righe fisicamente anziché sostituirle con righe vuote (es. `\n`), tutti gli errori di sintassi o di runtime segnalati successivamente dal parser o dall'interprete avranno numeri di riga **sfalsati** all'indietro di un numero pari agli import eseguiti.~~
+* ~~**Soluzione consigliata**: Modificare `check.rs` in modo che, quando rileva e convalida una riga di import, inserisca una riga vuota (o un commento segnaposto) in `stripped_lines` anziché saltare del tutto il push. In questo modo la corrispondenza 1-a-1 dei numeri di riga viene preservata.~~
 
 ---
 
