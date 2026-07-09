@@ -220,7 +220,6 @@ impl Interpreter {
             Statement::Expr(expr) => {
                 self.eval_expression(expr);
             }
-            _ => {}
         }
     }
 }

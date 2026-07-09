@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 use crate::engine::ast::{Program, Statement};
 use crate::engine::value::Value;
 
@@ -19,7 +19,6 @@ pub struct Interpreter {
     pub scopes: Vec<HashMap<String, VarEntry>>,
     pub fn_scope_starts: Vec<usize>,
     pub functions: HashMap<String, Statement>,
-    pub loaded_files: HashSet<String>,
     pub last_return: Option<Value>,
     pub loop_break: bool,
     pub loop_continue: bool,
@@ -32,7 +31,6 @@ impl Interpreter {
             scopes: vec![HashMap::new()],
             fn_scope_starts: Vec::new(),
             functions: HashMap::new(),
-            loaded_files: HashSet::new(),
             last_return: None,
             loop_break: false,
             loop_continue: false,
@@ -96,36 +94,7 @@ impl Interpreter {
         Value::Null
     }
 
-    pub fn set_var(&mut self, name: String, value: Value) {
-        let start_idx = self.fn_scope_starts.last().cloned().unwrap_or(0);
-        for idx in (start_idx..self.scopes.len()).rev() {
-            if let Some(entry) = self.scopes[idx].get_mut(&name) {
-                if !entry.is_mutable {
-                    let err_msg = format!("Cannot assign to lock (constant) '{}'.", name);
-                    println!("Runtime Error: {}", err_msg);
-                    self.exception = Some(Value::String(err_msg));
-                    return;
-                }
-                entry.value = value;
-                return;
-            }
-        }
-        if start_idx > 0 {
-            if let Some(entry) = self.scopes[0].get_mut(&name) {
-                if !entry.is_mutable {
-                    let err_msg = format!("Cannot assign to lock (constant) '{}'.", name);
-                    println!("Runtime Error: {}", err_msg);
-                    self.exception = Some(Value::String(err_msg));
-                    return;
-                }
-                entry.value = value;
-                return;
-            }
-        }
-        let err_msg = format!("Variable '{}' not declared before assignment.", name);
-        println!("Runtime Error: {}", err_msg);
-        self.exception = Some(Value::String(err_msg));
-    }
+
 
     pub fn define_var(&mut self, name: String, value: Value, is_mutable: bool) {
         self.current_scope().insert(name, VarEntry { value, is_mutable });

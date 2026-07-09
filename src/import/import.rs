@@ -26,18 +26,7 @@ impl ImportManager {
         }
     }
 
-    /// Importa un intero modulo genitore (es. `importa nio`).
-    pub fn import_all(&mut self, parent: &str) -> bool {
-        if let Some(members) = self.allowed_imports.get(parent) {
-            self.active_parents.insert(parent.to_string());
-            for m in members {
-                self.active_members.insert(m.clone());
-            }
-            true
-        } else {
-            false
-        }
-    }
+
 
     /// Importa un membro specifico da un modulo genitore.
     /// Il carattere jolly "*" importa tutti i membri.
@@ -71,10 +60,7 @@ impl ImportManager {
         self.active_members.contains(member)
     }
 
-    /// Verifica se un modulo genitore è attivo.
-    pub fn is_parent_active(&self, parent: &str) -> bool {
-        self.active_parents.contains(parent)
-    }
+
 }
 
 #[cfg(test)]
@@ -98,7 +84,6 @@ mod tests {
 
         // Associazione membro-genitore non valida
         assert!(!manager2.import_member("italian", "english"));
-        assert!(!manager2.is_parent_active("english"));
 
         // Import matematico valido
         assert!(manager2.import_member("sin", "nmath"));

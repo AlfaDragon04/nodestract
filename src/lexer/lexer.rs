@@ -18,21 +18,7 @@ pub enum Token {
     Unknown(char),
 }
 
-impl Token {
-    /// Restituisce la rappresentazione testuale del token.
-    pub fn to_string_repr(&self) -> String {
-        match self {
-            Token::Keyword(s) => s.clone(),
-            Token::Identifier(s) => s.clone(),
-            Token::StringLiteral(s) => format!("\"{}\"", s),
-            Token::Number(n) => n.to_string(),
-            Token::Delimiter(s) => s.clone(),
-            Token::Operator(s) => s.clone(),
-            Token::EOF => "EOF".to_string(),
-            Token::Unknown(c) => c.to_string(),
-        }
-    }
-}
+
 
 pub struct Lexer {
     input: Vec<char>,

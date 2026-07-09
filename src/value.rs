@@ -47,15 +47,5 @@ impl Value {
         }
     }
 
-    pub fn type_name(&self) -> String {
-        match self {
-            Value::Null => "null".to_string(),
-            Value::Boolean(_) => "bool".to_string(),
-            Value::Integer(_) => "int".to_string(),
-            Value::Float(_) => "float".to_string(),
-            Value::String(_) => "string".to_string(),
-            Value::Array(_) => "array".to_string(),
-            Value::Map(_) => "map".to_string(),
-        }
-    }
+
 }

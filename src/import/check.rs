@@ -154,4 +154,16 @@ mod tests {
         assert_eq!(stripped_lines[2], "");
         assert_eq!(stripped_lines[3], "scrivi(\"ciao\")");
     }
+
+    #[test]
+    fn test_inline_comments_in_imports() {
+        let source = "importa italiano da translate // commento in linea\nscrivi(\"ciao\")";
+        let translation_engine = TranslationEngine::new();
+        let (stripped, import_manager) = validate_imports(source, &translation_engine).unwrap();
+        
+        assert!(import_manager.is_member_active("italian", "translate"));
+        let stripped_lines: Vec<&str> = stripped.lines().collect();
+        assert_eq!(stripped_lines[0], "");
+        assert_eq!(stripped_lines[1], "scrivi(\"ciao\")");
+    }
 }

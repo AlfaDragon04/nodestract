@@ -42,14 +42,7 @@ impl Parser {
         }
     }
 
-    /// Guarda il token successivo.
-    pub fn peek(&self) -> &Token {
-        if self.position + 1 >= self.tokens.len() {
-            &Token::EOF
-        } else {
-            &self.tokens[self.position + 1]
-        }
-    }
+
 
     /// Avanza l'indice del parser.
     pub fn advance(&mut self) -> &Token {

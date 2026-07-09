@@ -139,25 +139,7 @@ impl TranslationEngine {
         None
     }
 
-    /// Restituisce il modulo richiesto per una keyword canonica (es. "sin" -> "nmath").
-    pub fn required_module(&self, canonical_keyword: &str) -> &str {
-        if let Some(module) = self.module_map.get(canonical_keyword) {
-            if module == "english"
-                || module == "italian"
-                || module == "spanish"
-                || module == "french"
-                || module == "german"
-                || module == "portuguese"
-                || module == "romanian"
-            {
-                ""
-            } else {
-                module.as_str()
-            }
-        } else {
-            ""
-        }
-    }
+
 
     /// Controlla se un identificatore corrisponde a una funzione built-in conosciuta.
     pub fn get_builtin_info(&self, word: &str) -> Option<(&str, &str)> {
@@ -204,8 +186,5 @@ mod tests {
         assert_eq!(engine.lookup("daca", &import_manager), Some("if"));
         // Spanish
         assert_eq!(engine.lookup("si", &import_manager), Some("if"));
-        
-        assert_eq!(engine.required_module("sin"), "nmath");
-        assert_eq!(engine.required_module("let"), "");
     }
 }

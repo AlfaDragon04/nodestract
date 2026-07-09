@@ -1,0 +1,4 @@
+importa italiano da translate // questo importa l'italiano
+importa * da nio // questo importa le funzioni di I/O come stampa
+
+stampa("Test commenti negli import riuscito con successo!")
