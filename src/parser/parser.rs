@@ -272,9 +272,9 @@ mod tests {
     fn test_invalid_break_and_continue() {
         let engine = Engine::new();
         
-        // break outside of loop
+        // interrompi fuori da un ciclo
         let source_break = "importa italiano da translate\ninterrompi\n";
-        // Let's just run it via Engine. Engine should print/handle errors. But we can test validate_imports + tokenization + parser directly.
+        // Esegue il test validando gli import, la tokenizzazione ed il parsing
         let (stripped, import_mgr) = crate::engine::check::validate_imports(source_break, &engine.translation_engine).unwrap();
         let filtered = crate::engine::filter::FilteredEngine::new(&engine.translation_engine, &import_mgr);
         let mut lexer = crate::engine::lexer::Lexer::new(&stripped);
@@ -284,7 +284,7 @@ mod tests {
         assert!(res.is_err());
         assert!(res.unwrap_err().contains("only allowed inside loops"));
 
-        // continue outside of loop
+        // continua fuori da un ciclo
         let source_continue = "importa italiano da translate\ncontinua\n";
         let (stripped, import_mgr) = crate::engine::check::validate_imports(source_continue, &engine.translation_engine).unwrap();
         let filtered = crate::engine::filter::FilteredEngine::new(&engine.translation_engine, &import_mgr);
@@ -295,7 +295,7 @@ mod tests {
         assert!(res.is_err());
         assert!(res.unwrap_err().contains("only allowed inside loops"));
 
-        // break inside function inside loop (illegal)
+        // interrompi dentro una funzione all'interno di un ciclo (illegale)
         let source_func = "importa italiano da translate\nmentre (vero) {\nfunzione f() {\ninterrompi\n}\n}\n";
         let (stripped, import_mgr) = crate::engine::check::validate_imports(source_func, &engine.translation_engine).unwrap();
         let filtered = crate::engine::filter::FilteredEngine::new(&engine.translation_engine, &import_mgr);

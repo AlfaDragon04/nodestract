@@ -28,7 +28,6 @@ impl Interpreter {
                     Expression::Variable(name) => name,
                     _ => {
                         let err_msg = "Target di assegnazione non valido.".to_string();
-                        println!("Runtime Error: {}", err_msg);
                         self.exception = Some(Value::String(err_msg));
                         return;
                     }
@@ -39,17 +38,14 @@ impl Interpreter {
                 if let Some(entry) = self.get_var_mut(var_name) {
                     if !entry.is_mutable {
                         let err_msg = format!("Impossibile assegnare a una costante '{}'.", var_name);
-                        println!("Runtime Error: {}", err_msg);
                         self.exception = Some(Value::String(err_msg));
                         return;
                     }
                     if let Err(err) = Self::mutate_value_at_path(&mut entry.value, &path, val) {
-                        println!("Runtime Error: {}", err);
                         self.exception = Some(Value::String(err));
                     }
                 } else {
                     let err_msg = format!("Variabile '{}' non dichiarata prima dell'assegnazione.", var_name);
-                    println!("Runtime Error: {}", err_msg);
                     self.exception = Some(Value::String(err_msg));
                 }
             }

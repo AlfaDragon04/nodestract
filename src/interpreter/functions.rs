@@ -63,7 +63,7 @@ impl Interpreter {
                 }
             }
 
-            // Math operations
+            // Operazioni matematiche
             "sin" => {
                 if let Some(arg) = args.get(0) {
                     let val = self.eval_expression(arg);
@@ -262,7 +262,6 @@ impl Interpreter {
                                 "Arity Mismatch: Function '{}' expects {} arguments, but {} were provided",
                                 target, params.len(), args.len()
                             );
-                            println!("Runtime Error: {}", err_msg);
                             self.exception = Some(Value::String(err_msg));
                             return Value::Null;
                         }

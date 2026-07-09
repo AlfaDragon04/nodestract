@@ -15,7 +15,6 @@ impl Interpreter {
                         Value::Integer(res)
                     } else {
                         let err_msg = "MATH ERROR: Integer overflow during addition.".to_string();
-                        println!("{}", err_msg);
                         self.exception = Some(Value::String(err_msg));
                         Value::Null
                     }
@@ -25,7 +24,6 @@ impl Interpreter {
                         Value::Integer(res)
                     } else {
                         let err_msg = "MATH ERROR: Integer underflow during subtraction.".to_string();
-                        println!("{}", err_msg);
                         self.exception = Some(Value::String(err_msg));
                         Value::Null
                     }
@@ -35,7 +33,6 @@ impl Interpreter {
                         Value::Integer(res)
                     } else {
                         let err_msg = "MATH ERROR: Integer overflow during multiplication.".to_string();
-                        println!("{}", err_msg);
                         self.exception = Some(Value::String(err_msg));
                         Value::Null
                     }
@@ -43,7 +40,6 @@ impl Interpreter {
                 "/" => {
                     if b == 0 {
                         let err_msg = "MATH ERROR: Division by zero.".to_string();
-                        println!("{}", err_msg);
                         self.exception = Some(Value::String(err_msg));
                         Value::Null
                     } else {
@@ -67,7 +63,6 @@ impl Interpreter {
                 "/" => {
                     if b == 0.0 {
                         let err_msg = "MATH ERROR: Division by zero.".to_string();
-                        println!("{}", err_msg);
                         self.exception = Some(Value::String(err_msg));
                         Value::Null
                     } else {
@@ -89,7 +84,6 @@ impl Interpreter {
                 "!=" => Value::Boolean(a != b),
                 _ => {
                     let err_msg = "TYPE ERROR: Invalid bool op".to_string();
-                    println!("{}", err_msg);
                     self.exception = Some(Value::String(err_msg));
                     Value::Null
                 }
@@ -106,7 +100,6 @@ impl Interpreter {
                 "!=" => Value::Boolean(a != b),
                 _ => {
                     let err_msg = "TYPE ERROR: Invalid string op".to_string();
-                    println!("{}", err_msg);
                     self.exception = Some(Value::String(err_msg));
                     Value::Null
                 }
@@ -117,7 +110,6 @@ impl Interpreter {
                 "!=" => Value::Boolean(true),
                 _ => {
                     let err_msg = format!("CRITICAL TYPE ERROR: Incompatible types for '{}': String and {:?}", operator, b);
-                    println!("{}", err_msg);
                     self.exception = Some(Value::String(err_msg));
                     Value::Null
                 }
@@ -128,7 +120,6 @@ impl Interpreter {
                 "!=" => Value::Boolean(true),
                 _ => {
                     let err_msg = format!("CRITICAL TYPE ERROR: Incompatible types for '{}': {:?} and String", operator, a);
-                    println!("{}", err_msg);
                     self.exception = Some(Value::String(err_msg));
                     Value::Null
                 }
@@ -141,7 +132,6 @@ impl Interpreter {
                         "CRITICAL TYPE ERROR: Incompatible types for '{}': {:?} and {:?}",
                         operator, l, r
                     );
-                    println!("{}", err_msg);
                     self.exception = Some(Value::String(err_msg));
                     Value::Null
                 }

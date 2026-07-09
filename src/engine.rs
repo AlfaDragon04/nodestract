@@ -68,7 +68,11 @@ impl Engine {
                 self.interpreter = Interpreter::new();
                 self.interpreter.run(program);
                 if let Some(ref exc) = self.interpreter.exception {
-                    crate::welcome::show_error(&format!("Uncaught Exception: {:?}", exc));
+                    let exc_str = match exc {
+                        crate::engine::value::Value::String(s) => s.clone(),
+                        other => other.to_string(),
+                    };
+                    crate::welcome::show_error(&format!("Uncaught Exception: {}", exc_str));
                 }
             }
             Err(err_msg) => {

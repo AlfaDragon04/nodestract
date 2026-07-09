@@ -156,12 +156,12 @@ impl Parser {
                     self.advance();
                     Ok(Expression::LiteralNull)
                 } else {
-                    // Try to parse as a built-in function or variable keyword (e.g. print, sin, etc.)
+                    // Prova ad analizzarlo come funzione built-in o parola chiave di variabile (es. stampa, sen, ecc.)
                     self.parse_identifier_or_keyword_expr(kw.clone())
                 }
             }
             Token::Delimiter(ref sym) if sym == "[" => {
-                self.advance(); // consume [
+                self.advance(); // consuma [
                 let mut elements = Vec::new();
                 if self.current_token() != &Token::Delimiter("]".to_string()) {
                     elements.push(self.parse_expression()?);
@@ -174,7 +174,7 @@ impl Parser {
                 Ok(Expression::Array(elements))
             }
             Token::Delimiter(ref sym) if sym == "{" => {
-                self.advance(); // consume {
+                self.advance(); // consuma {
                 let mut pairs = Vec::new();
                 if self.current_token() != &Token::Delimiter("}".to_string()) {
                     loop {
@@ -225,7 +225,7 @@ impl Parser {
         let mut name = name_str;
         self.advance();
 
-        // Member access (dot notation)
+        // Accesso ai membri (notazione con punto)
         if self.current_token() == &Token::Delimiter(".".to_string()) {
             self.advance();
             if let Token::Identifier(ref method) = self.current_token() {

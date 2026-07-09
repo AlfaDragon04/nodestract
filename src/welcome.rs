@@ -28,7 +28,7 @@ pub fn show_welcome() {
 }
 
 pub fn show_version() {
-    println!("Node Stract Compiler (NSC) v0.8.0 - HawkStract Ecosystem");
+    println!("Node Stract Compiler (NSC) v{} - HawkStract Ecosystem", env!("CARGO_PKG_VERSION"));
 }
 
 pub fn show_error(msg: &str) {

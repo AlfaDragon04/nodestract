@@ -43,7 +43,7 @@ pub fn validate_imports(
             continue;
         }
 
-        // Split line into words to check for import
+        // Divide la riga in parole per cercare l'import
         let words: Vec<&str> = trimmed
             .split_whitespace()
             .map(|w| w.trim_matches(|c| c == ';' || c == ','))
