@@ -117,6 +117,15 @@ crea ris = calcola_area(5)
 stampa("L'area è:", ris)
 ```
 
+### 3.6 Chiamate a Funzione Dinamiche (Metaprogrammazione)
+NodeStract permette di chiamare dinamicamente funzioni a runtime utilizzando stringhe contenenti il loro nome. Se una variabile o una costante assume come valore il nome di una funzione (come stringa), la variabile stessa può essere invocata come se fosse una funzione.
+
+```ns
+crea operazione = "stampa"
+// Invocherà dinamicamente la funzione 'stampa'
+operazione("Chiamata dinamica eseguita con successo!")
+```
+
 ---
 
 ## 4. Moduli e Funzioni Built-in (Librerie)

@@ -17,7 +17,7 @@ pub mod check;
 #[path = "filter/filter.rs"]
 pub mod filter;
 
-use self::lexer::{Lexer, Token};
+use self::lexer::Lexer;
 use self::parser::Parser;
 use self::interpreter::Interpreter;
 use self::translate::TranslationEngine;
@@ -61,24 +61,9 @@ impl Engine {
         let mut lexer = Lexer::new(&stripped_source);
         let final_tokens = lexer.tokenize(&self.translation_engine, &filtered_engine);
 
-        // Verifica che le funzioni di sistema usate siano effettivamente importate
-        for token in &final_tokens {
-            if let Token::Identifier(ref name) = token {
-                if let Some((canonical, module)) = self.translation_engine.get_builtin_info(name) {
-                    if !self.import_manager.is_member_active(canonical, module) {
-                        crate::welcome::show_error(&format!(
-                            "Import Error: Built-in function '{}' used but its library module '{}' was not imported",
-                            name, module
-                        ));
-                        return;
-                    }
-                }
-            }
-        }
-
         // 4. Esegue il parsing e la validazione sintattica dei delimitatori
         let mut parser = Parser::new(final_tokens.clone());
-        match parser.parse() {
+        match parser.parse(&self.translation_engine, &self.import_manager) {
             Ok(program) => {
                 self.interpreter = Interpreter::new();
                 self.interpreter.run(program);
@@ -87,7 +72,7 @@ impl Engine {
                 }
             }
             Err(err_msg) => {
-                crate::welcome::show_error(&format!("Syntax Error: {}", err_msg));
+                crate::welcome::show_error(&err_msg);
             }
         }
     }

@@ -18,6 +18,13 @@ pub enum Token {
     Unknown(char),
 }
 
+#[derive(Debug, PartialEq, Clone)]
+pub struct TokenWithSpan {
+    pub token: Token,
+    pub line: usize,
+    pub col: usize,
+}
+
 
 
 pub struct Lexer {
@@ -53,8 +60,22 @@ impl Lexer {
         }
     }
 
-    /// Converte la stringa sorgente in un vettore di Token.
-    pub fn tokenize(&mut self, translation: &crate::engine::translate::TranslationEngine, filtered_engine: &crate::engine::filter::FilteredEngine) -> Vec<Token> {
+    pub fn get_line_col(&self, pos: usize) -> (usize, usize) {
+        let mut line = 1;
+        let mut col = 1;
+        for i in 0..pos.min(self.input.len()) {
+            if self.input[i] == '\n' {
+                line += 1;
+                col = 1;
+            } else {
+                col += 1;
+            }
+        }
+        (line, col)
+    }
+
+    /// Converte la stringa sorgente in un vettore di TokenWithSpan.
+    pub fn tokenize(&mut self, translation: &crate::engine::translate::TranslationEngine, filtered_engine: &crate::engine::filter::FilteredEngine) -> Vec<TokenWithSpan> {
         let mut tokens = Vec::new();
         while self.position < self.input.len() {
             let char = self.input[self.position];
@@ -75,6 +96,9 @@ impl Lexer {
                 continue;
             }
 
+            let start_pos = self.position;
+            let (line, col) = self.get_line_col(start_pos);
+
             // 3. Cerca di fare match con gli operatori (dal più lungo)
             let mut matched_op = None;
             for (op_symbol, _) in &self.operators {
@@ -85,7 +109,7 @@ impl Lexer {
             }
             if let Some(op) = matched_op {
                 self.position += op.chars().count();
-                tokens.push(Token::Operator(op));
+                tokens.push(TokenWithSpan { token: Token::Operator(op), line, col });
                 continue;
             }
 
@@ -99,34 +123,40 @@ impl Lexer {
             }
             if let Some(delim) = matched_delim {
                 self.position += delim.chars().count();
-                tokens.push(Token::Delimiter(delim));
+                tokens.push(TokenWithSpan { token: Token::Delimiter(delim), line, col });
                 continue;
             }
 
             // 5. Riconosce le stringhe letterali
             if char == '"' {
-                tokens.push(self.read_string());
+                let token = self.read_string();
+                tokens.push(TokenWithSpan { token, line, col });
                 continue;
             }
 
             // 6. Riconosce i numeri
             if char.is_numeric() {
-                tokens.push(self.read_number());
+                let token = self.read_number();
+                tokens.push(TokenWithSpan { token, line, col });
                 continue;
             }
 
             // 7. Riconosce identificatori/keyword
             if char.is_alphabetic() || char == '_' {
-                tokens.push(self.read_identifier(translation, filtered_engine));
+                let token = self.read_identifier(translation, filtered_engine);
+                tokens.push(TokenWithSpan { token, line, col });
                 continue;
             }
 
             // 8. Carattere sconosciuto
-            tokens.push(Token::Unknown(char));
+            let token = Token::Unknown(char);
+            tokens.push(TokenWithSpan { token, line, col });
             self.position += 1;
         }
 
-        tokens.push(Token::EOF);
+        let end_pos = self.position;
+        let (line, col) = self.get_line_col(end_pos);
+        tokens.push(TokenWithSpan { token: Token::EOF, line, col });
         tokens
     }
 

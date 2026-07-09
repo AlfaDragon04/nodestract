@@ -10,9 +10,36 @@ impl Interpreter {
                 _ => Value::Null,
             },
             (Value::Integer(a), Value::Integer(b)) => match operator {
-                "+" => Value::Integer(a + b),
-                "-" => Value::Integer(a - b),
-                "*" => Value::Integer(a * b),
+                "+" => {
+                    if let Some(res) = a.checked_add(b) {
+                        Value::Integer(res)
+                    } else {
+                        let err_msg = "MATH ERROR: Integer overflow during addition.".to_string();
+                        println!("{}", err_msg);
+                        self.exception = Some(Value::String(err_msg));
+                        Value::Null
+                    }
+                }
+                "-" => {
+                    if let Some(res) = a.checked_sub(b) {
+                        Value::Integer(res)
+                    } else {
+                        let err_msg = "MATH ERROR: Integer underflow during subtraction.".to_string();
+                        println!("{}", err_msg);
+                        self.exception = Some(Value::String(err_msg));
+                        Value::Null
+                    }
+                }
+                "*" => {
+                    if let Some(res) = a.checked_mul(b) {
+                        Value::Integer(res)
+                    } else {
+                        let err_msg = "MATH ERROR: Integer overflow during multiplication.".to_string();
+                        println!("{}", err_msg);
+                        self.exception = Some(Value::String(err_msg));
+                        Value::Null
+                    }
+                }
                 "/" => {
                     if b == 0 {
                         let err_msg = "MATH ERROR: Division by zero.".to_string();

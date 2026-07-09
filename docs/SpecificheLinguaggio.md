@@ -39,3 +39,22 @@ NodeStract è un linguaggio procedurale, funzionale e a tipizzazione dinamica is
 - Non esistono le classi (`class`) né l'operatore `new`.
 - Non si dichiarano i tipi di dato per le variabili; si utilizzano semplicemente `let` o `const` (nelle loro relative traduzioni).
 - Non sono ammessi caratteri underscore `_` nei costrutti chiave e nelle traduzioni ufficiali del linguaggio.
+
+---
+
+## 5. Risoluzione Dinamica delle Chiamate tramite Stringhe (Dynamic Call String Fallback)
+
+NodeStract supporta un comportamento particolare di chiamata a funzione dinamica (metaprogrammazione):
+- Se un'espressione di chiamata a funzione (es. `target(argomenti)`) valuta come target una stringa, l'interprete risolverà a runtime il nome della funzione cercando nella tabella dei simboli globali una funzione o una built-in che abbia esattamente lo stesso nome specificato all'interno del valore della stringa.
+
+### Esempio d'uso:
+```ns
+importa italiano da translate
+importa stampa da nio
+
+crea nome_funzione = "stampa"
+// Questa chiamata invocherà dinamicamente la funzione 'stampa'
+nome_funzione("Ciao da chiamata dinamica!")
+```
+Questo meccanismo è supportato per consentire un comportamento dinamico assimilabile alle callback e alle chiamate per nome tipiche dei linguaggi di scripting più flessibili.
+
