@@ -34,15 +34,7 @@ impl Parser {
                         Ok(Statement::Continue)
                     }
                     "return" => self.parse_return_statement(),
-                    "function" => self.parse_function(false),
-                    "async" => {
-                        self.advance(); // consume async
-                        self.consume(
-                            &Token::Keyword("function".to_string()),
-                            "Expected 'function' keyword after 'async'",
-                        )?;
-                        self.parse_function(true)
-                    }
+                    "function" => self.parse_function(),
                     _ => {
                         let expr = self.parse_expression()?;
                         Ok(Statement::Expr(expr))
@@ -250,7 +242,7 @@ impl Parser {
         Ok(Statement::ReturnStatement { value })
     }
 
-    fn parse_function(&mut self, is_async: bool) -> Result<Statement, String> {
+    fn parse_function(&mut self) -> Result<Statement, String> {
         self.advance(); // consume function
         let name = match self.current_token() {
             Token::Identifier(s) => s.clone(),
@@ -279,7 +271,7 @@ impl Parser {
         let body_res = self.parse_block();
         self.loop_depth = old_loop_depth;
         let body = body_res?;
-        Ok(Statement::FunctionDecl { is_async, name, params, body })
+        Ok(Statement::FunctionDecl { name, params, body })
     }
 
     fn parse_block(&mut self) -> Result<Vec<Statement>, String> {

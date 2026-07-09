@@ -5,11 +5,15 @@ funzione get_nome() {
     ritorna "Luca"
 }
 
-crea ris = get_nome() * 3
-stampa("Risultato Luca * 3:", ris)
+crea errore_rilevato = falso
+prova {
+    crea ris = get_nome() * 3
+} cattura (e) {
+    errore_rilevato = vero
+}
 
-se (ris == nullo) {
+se (errore_rilevato == vero) {
     stampa("Return mismatch handling OK")
 } altrimenti {
-    stampa("FAIL: get_nome() * 3 non ha restituito nullo, era", ris)
+    stampa("FAIL: get_nome() * 3 non ha generato eccezione")
 }

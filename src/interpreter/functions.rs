@@ -257,20 +257,26 @@ impl Interpreter {
             _ => {
                 if let Some(func_stmt) = self.functions.get(target).cloned() {
                     if let Statement::FunctionDecl { params, body, .. } = func_stmt {
+                        if args.len() != params.len() {
+                            let err_msg = format!(
+                                "Arity Mismatch: Function '{}' expects {} arguments, but {} were provided",
+                                target, params.len(), args.len()
+                            );
+                            println!("Runtime Error: {}", err_msg);
+                            self.exception = Some(Value::String(err_msg));
+                            return Value::Null;
+                        }
+
                         let mut new_scope = HashMap::new();
                         for (i, param_name) in params.iter().enumerate() {
-                            let arg_val = if i < args.len() {
-                                self.eval_expression(&args[i])
-                            } else {
-                                Value::Null
-                            };
+                            let arg_val = self.eval_expression(&args[i]);
                             let entry = VarEntry { value: arg_val, is_mutable: true };
                             new_scope.insert(param_name.clone(), entry);
                         }
-                        // Implement lexical scoping: isolate execution scope to global scope + local function scope
-                        let global_scope = self.scopes[0].clone();
-                        let function_scopes = vec![global_scope, new_scope];
-                        let old_scopes = std::mem::replace(&mut self.scopes, function_scopes);
+
+                        let scope_idx = self.scopes.len();
+                        self.scopes.push(new_scope);
+                        self.fn_scope_starts.push(scope_idx);
 
                         for s in body {
                             self.execute_statement(&s);
@@ -279,9 +285,8 @@ impl Interpreter {
                             }
                         }
 
-                        let mut finished_scopes = std::mem::replace(&mut self.scopes, old_scopes);
-                        // Copy updated global scope back to the real global scope
-                        self.scopes[0] = finished_scopes.remove(0);
+                        self.fn_scope_starts.pop();
+                        self.scopes.truncate(scope_idx);
 
                         let result = self.last_return.clone().unwrap_or(Value::Null);
                         self.last_return = None;

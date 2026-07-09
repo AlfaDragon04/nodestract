@@ -21,8 +21,6 @@
   "catch": ["fangen", ""],
   "finally": ["schliesslich", ""],
   "throw": ["werfen", ""],
-  "async": ["asynchron", ""],
-  "await": ["warten", ""],
   "print": ["ausgeben", "nio"],
   "input": ["eingeben", "nio"],
   "from": ["von", ""],

@@ -155,10 +155,6 @@ impl Parser {
                 } else if kw == "null" {
                     self.advance();
                     Ok(Expression::LiteralNull)
-                } else if kw == "await" {
-                    self.advance();
-                    let value = self.parse_unary()?;
-                    Ok(Expression::Await(Box::new(value)))
                 } else {
                     // Try to parse as a built-in function or variable keyword (e.g. print, sin, etc.)
                     self.parse_identifier_or_keyword_expr(kw.clone())

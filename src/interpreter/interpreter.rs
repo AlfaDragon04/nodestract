@@ -17,6 +17,7 @@ pub struct VarEntry {
 
 pub struct Interpreter {
     pub scopes: Vec<HashMap<String, VarEntry>>,
+    pub fn_scope_starts: Vec<usize>,
     pub functions: HashMap<String, Statement>,
     pub loaded_files: HashSet<String>,
     pub last_return: Option<Value>,
@@ -29,6 +30,7 @@ impl Interpreter {
     pub fn new() -> Self {
         Self {
             scopes: vec![HashMap::new()],
+            fn_scope_starts: Vec::new(),
             functions: HashMap::new(),
             loaded_files: HashSet::new(),
             last_return: None,
@@ -80,8 +82,14 @@ impl Interpreter {
     }
 
     pub fn get_var(&self, name: &str) -> Value {
-        for scope in self.scopes.iter().rev() {
-            if let Some(entry) = scope.get(name) {
+        let start_idx = self.fn_scope_starts.last().cloned().unwrap_or(0);
+        for idx in (start_idx..self.scopes.len()).rev() {
+            if let Some(entry) = self.scopes[idx].get(name) {
+                return entry.value.clone();
+            }
+        }
+        if start_idx > 0 {
+            if let Some(entry) = self.scopes[0].get(name) {
                 return entry.value.clone();
             }
         }
@@ -89,8 +97,9 @@ impl Interpreter {
     }
 
     pub fn set_var(&mut self, name: String, value: Value) {
-        for scope in self.scopes.iter_mut().rev() {
-            if let Some(entry) = scope.get_mut(&name) {
+        let start_idx = self.fn_scope_starts.last().cloned().unwrap_or(0);
+        for idx in (start_idx..self.scopes.len()).rev() {
+            if let Some(entry) = self.scopes[idx].get_mut(&name) {
                 if !entry.is_mutable {
                     let err_msg = format!("Cannot assign to lock (constant) '{}'.", name);
                     println!("Runtime Error: {}", err_msg);
@@ -101,7 +110,21 @@ impl Interpreter {
                 return;
             }
         }
-        println!("Runtime Error: Variable '{}' not declared before assignment.", name);
+        if start_idx > 0 {
+            if let Some(entry) = self.scopes[0].get_mut(&name) {
+                if !entry.is_mutable {
+                    let err_msg = format!("Cannot assign to lock (constant) '{}'.", name);
+                    println!("Runtime Error: {}", err_msg);
+                    self.exception = Some(Value::String(err_msg));
+                    return;
+                }
+                entry.value = value;
+                return;
+            }
+        }
+        let err_msg = format!("Variable '{}' not declared before assignment.", name);
+        println!("Runtime Error: {}", err_msg);
+        self.exception = Some(Value::String(err_msg));
     }
 
     pub fn define_var(&mut self, name: String, value: Value, is_mutable: bool) {

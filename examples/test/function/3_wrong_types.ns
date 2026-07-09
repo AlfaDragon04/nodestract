@@ -5,11 +5,15 @@ funzione raddoppia(n) {
     ritorna n * 2
 }
 
-crea ris = raddoppia("cane")
-stampa("Raddoppia cane:", ris)
+crea errore_rilevato = falso
+prova {
+    crea ris = raddoppia("cane")
+} cattura (e) {
+    errore_rilevato = vero
+}
 
-se (ris == nullo) {
+se (errore_rilevato == vero) {
     stampa("Wrong type handling OK")
 } altrimenti {
-    stampa("FAIL: raddoppia(cane) non ha restituito nullo, era", ris)
+    stampa("FAIL: raddoppia(cane) non ha generato eccezione")
 }

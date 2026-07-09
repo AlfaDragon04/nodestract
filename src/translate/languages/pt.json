@@ -21,8 +21,6 @@
   "catch": ["capturar", ""],
   "finally": ["finalmente", ""],
   "throw": ["lancar", ""],
-  "async": ["assincrono", ""],
-  "await": ["esperar", ""],
   "print": ["mostrar", "nio"],
   "input": ["inserir", "nio"],
   "from": ["de", ""],

@@ -21,8 +21,6 @@
   "catch": ["prinde", ""],
   "finally": ["infinal", ""],
   "throw": ["arunca", ""],
-  "async": ["asincron", ""],
-  "await": ["asteapta", ""],
   "print": ["afiseaza", "nio"],
   "input": ["introduce", "nio"],
   "from": ["din", ""],

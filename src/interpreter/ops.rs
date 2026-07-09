@@ -2,7 +2,7 @@ use crate::engine::value::Value;
 use super::Interpreter;
 
 impl Interpreter {
-    pub fn eval_binary_op(&self, left: Value, operator: &str, right: Value) -> Value {
+    pub fn eval_binary_op(&mut self, left: Value, operator: &str, right: Value) -> Value {
         match (left, right) {
             (Value::Null, Value::Null) => match operator {
                 "==" => Value::Boolean(true),
@@ -15,7 +15,9 @@ impl Interpreter {
                 "*" => Value::Integer(a * b),
                 "/" => {
                     if b == 0 {
-                        println!("MATH ERROR: Division by zero.");
+                        let err_msg = "MATH ERROR: Division by zero.".to_string();
+                        println!("{}", err_msg);
+                        self.exception = Some(Value::String(err_msg));
                         Value::Null
                     } else {
                         Value::Integer(a / b)
@@ -37,7 +39,9 @@ impl Interpreter {
                 "*" => Value::Float(a * b),
                 "/" => {
                     if b == 0.0 {
-                        println!("MATH ERROR: Division by zero.");
+                        let err_msg = "MATH ERROR: Division by zero.".to_string();
+                        println!("{}", err_msg);
+                        self.exception = Some(Value::String(err_msg));
                         Value::Null
                     } else {
                         Value::Float(a / b)
@@ -57,7 +61,9 @@ impl Interpreter {
                 "==" => Value::Boolean(a == b),
                 "!=" => Value::Boolean(a != b),
                 _ => {
-                    println!("TYPE ERROR: Invalid bool op");
+                    let err_msg = "TYPE ERROR: Invalid bool op".to_string();
+                    println!("{}", err_msg);
+                    self.exception = Some(Value::String(err_msg));
                     Value::Null
                 }
             },
@@ -72,7 +78,9 @@ impl Interpreter {
                 "==" => Value::Boolean(a == b),
                 "!=" => Value::Boolean(a != b),
                 _ => {
-                    println!("TYPE ERROR: Invalid string op");
+                    let err_msg = "TYPE ERROR: Invalid string op".to_string();
+                    println!("{}", err_msg);
+                    self.exception = Some(Value::String(err_msg));
                     Value::Null
                 }
             },
@@ -80,22 +88,34 @@ impl Interpreter {
                 "+" => Value::String(format!("{}{}", a, b)),
                 "==" => Value::Boolean(false),
                 "!=" => Value::Boolean(true),
-                _ => Value::Null,
+                _ => {
+                    let err_msg = format!("CRITICAL TYPE ERROR: Incompatible types for '{}': String and {:?}", operator, b);
+                    println!("{}", err_msg);
+                    self.exception = Some(Value::String(err_msg));
+                    Value::Null
+                }
             },
             (a, Value::String(b)) => match operator {
                 "+" => Value::String(format!("{}{}", a, b)),
                 "==" => Value::Boolean(false),
                 "!=" => Value::Boolean(true),
-                _ => Value::Null,
+                _ => {
+                    let err_msg = format!("CRITICAL TYPE ERROR: Incompatible types for '{}': {:?} and String", operator, a);
+                    println!("{}", err_msg);
+                    self.exception = Some(Value::String(err_msg));
+                    Value::Null
+                }
             },
             (l, r) => match operator {
                 "==" => Value::Boolean(false),
                 "!=" => Value::Boolean(true),
                 _ => {
-                    println!(
+                    let err_msg = format!(
                         "CRITICAL TYPE ERROR: Incompatible types for '{}': {:?} and {:?}",
                         operator, l, r
                     );
+                    println!("{}", err_msg);
+                    self.exception = Some(Value::String(err_msg));
                     Value::Null
                 }
             },

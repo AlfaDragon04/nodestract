@@ -21,8 +21,6 @@
   "catch": ["cattura", ""],
   "finally": ["infine", ""],
   "throw": ["lancia", ""],
-  "async": ["asincrono", ""],
-  "await": ["attendi", ""],
   "print": ["stampa", "nio"],
   "input": ["inserisci", "nio"],
   "from": ["da", ""],

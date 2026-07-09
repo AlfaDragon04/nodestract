@@ -9,7 +9,7 @@ pub enum Statement {
     SwitchStatement { discriminant: Expression, cases: Vec<(Expression, Vec<Statement>)>, default_case: Option<Vec<Statement>> },
     ReturnStatement { value: Expression },
     CapabilityUse { service: String, params: Vec<String> },
-    FunctionDecl { is_async: bool, name: String, params: Vec<String>, body: Vec<Statement> },
+    FunctionDecl { name: String, params: Vec<String>, body: Vec<Statement> },
     TryCatchStatement { try_block: Vec<Statement>, catch_variable: Option<String>, catch_block: Vec<Statement>, finally_block: Option<Vec<Statement>> },
     ThrowStatement { value: Expression },
     Break,
@@ -32,7 +32,6 @@ pub enum Expression {
     UnaryOp { operator: String, operand: Box<Expression> },
     Ternary { condition: Box<Expression>, true_expr: Box<Expression>, false_expr: Box<Expression> },
     FunctionCall { target: Box<Expression>, args: Vec<Expression> },
-    Await(Box<Expression>),
 }
 
 #[derive(Debug, Clone)]

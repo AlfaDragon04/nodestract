@@ -99,7 +99,6 @@ impl Interpreter {
                 };
                 self.handle_function_call(&func_name, args)
             }
-            Expression::Await(value) => self.eval_expression(value),
         }
     }
 }

@@ -5,12 +5,16 @@ funzione somma_tre(a, b, c) {
     ritorna a + b + c
 }
 
-// Chiamata con solo 2 parametri invece di 3
-crea ris = somma_tre(10, 20)
-stampa("Risultato somma_tre con 2 argomenti:", ris)
+crea errore_rilevato = falso
+prova {
+    // Chiamata con solo 2 parametri invece di 3 (arity mismatch)
+    crea ris = somma_tre(10, 20)
+} cattura (e) {
+    errore_rilevato = vero
+}
 
-se (ris == nullo) {
+se (errore_rilevato == vero) {
     stampa("Arg count mismatch OK")
 } altrimenti {
-    stampa("FAIL: somma_tre(10, 20) non ha restituito nullo, era", ris)
+    stampa("FAIL: somma_tre(10, 20) non ha generato eccezione")
 }
