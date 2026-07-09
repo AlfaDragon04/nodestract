@@ -2,7 +2,7 @@ importa italiano da translate
 importa * da nio
 
 crea somma = 0
-per i in 1 .. 5 {
+per i in 1..5 {
     stampa("Ciclo per - i =", i)
     somma = somma + i
 }

@@ -78,6 +78,16 @@ impl Parser {
 
     /// Controlli pre-parsing per bilanciamento parentesi e collisioni di nomi.
     fn pre_check(&self, translation_engine: &crate::engine::translate::TranslationEngine, import_manager: &crate::engine::import::ImportManager) -> Result<(), String> {
+        // Rileva stringhe letterali non chiuse a fine file
+        for token_ws in &self.tokens {
+            if let Token::Unknown('"') = token_ws.token {
+                return Err(format!(
+                    "Syntax Error (Line {}, Col {}): Unclosed string literal",
+                    token_ws.line, token_ws.col
+                ));
+            }
+        }
+
         // Verifica che le funzioni di sistema usate siano effettivamente importate
         for token_ws in &self.tokens {
             if let Token::Identifier(ref name) = token_ws.token {

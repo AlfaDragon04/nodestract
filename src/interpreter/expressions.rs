@@ -28,11 +28,16 @@ impl Interpreter {
                 Value::Map(map)
             }
             Expression::Variable(name) => {
-                let val = self.get_var(name);
-                if val == Value::Null && self.functions.contains_key(name) {
-                    Value::String(name.clone())
+                if !self.has_var(name) {
+                    if self.functions.contains_key(name) {
+                        Value::String(name.clone())
+                    } else {
+                        let err_msg = format!("Variabile non definita: '{}'", name);
+                        self.exception = Some(Value::String(err_msg));
+                        Value::Null
+                    }
                 } else {
-                    val
+                    self.get_var(name)
                 }
             }
             Expression::Index { target, index } => {

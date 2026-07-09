@@ -55,33 +55,30 @@ fn serde_to_ns(val: serde_json::Value) -> Value {
     }
 }
 
-pub fn read_file(path: &str) -> Value {
+pub fn read_file(path: &str) -> Result<Value, String> {
     if !path.ends_with(".json") && !path.ends_with(".txt") {
-        println!("FS Error: Only .json or .txt files allowed.");
-        return Value::Null;
+        return Err("FS Error: Only .json or .txt files allowed.".to_string());
     }
     match fs::read_to_string(path) {
         Ok(content) => {
             if path.ends_with(".json") {
                 match serde_json::from_str(&content) {
-                    Ok(json_val) => serde_to_ns(json_val),
+                    Ok(json_val) => Ok(serde_to_ns(json_val)),
                     Err(e) => {
-                        println!("FS Error: JSON malformato nel file '{}'. {}", path, e);
-                        Value::Null
+                        Err(format!("FS Error: Malformed JSON in file '{}'. {}", path, e))
                     }
                 }
             } else {
-                Value::String(content)
+                Ok(Value::String(content))
             }
         }
-        Err(_) => Value::Null,
+        Err(e) => Err(format!("FS Error: Could not read file '{}'. {}", path, e)),
     }
 }
 
-pub fn write_file(path: &str, content: &Value) -> Value {
+pub fn write_file(path: &str, content: &Value) -> Result<Value, String> {
     if !path.ends_with(".json") && !path.ends_with(".txt") {
-        println!("FS Error: Only .json or .txt files allowed.");
-        return Value::Boolean(false);
+        return Err("FS Error: Only .json or .txt files allowed.".to_string());
     }
     
     if let Some(parent) = Path::new(path).parent() {
@@ -99,20 +96,19 @@ pub fn write_file(path: &str, content: &Value) -> Value {
 
     match write_res {
         Ok(content_str) => match fs::write(path, content_str) {
-            Ok(_) => Value::Boolean(true),
-            Err(_) => Value::Boolean(false),
+            Ok(_) => Ok(Value::Boolean(true)),
+            Err(e) => Err(format!("FS Error: Could not write file '{}'. {}", path, e)),
         },
-        Err(_) => Value::Boolean(false),
+        Err(e) => Err(format!("FS Error: Serialization failed. {}", e)),
     }
 }
 
-pub fn delete_file(path: &str) -> Value {
+pub fn delete_file(path: &str) -> Result<Value, String> {
     if !path.ends_with(".json") && !path.ends_with(".txt") {
-        println!("FS Error: Only .json or .txt files allowed.");
-        return Value::Boolean(false);
+        return Err("FS Error: Only .json or .txt files allowed.".to_string());
     }
     match fs::remove_file(path) {
-        Ok(_) => Value::Boolean(true),
-        Err(_) => Value::Boolean(false),
+        Ok(_) => Ok(Value::Boolean(true)),
+        Err(e) => Err(format!("FS Error: Could not delete file '{}'. {}", path, e)),
     }
 }

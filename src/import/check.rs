@@ -17,6 +17,14 @@ pub fn validate_imports(
         if let Some(pos) = clean_line.find("//") {
             clean_line = clean_line[..pos].to_string();
         }
+        while let Some(start_idx) = clean_line.find("/*") {
+            if let Some(end_idx) = clean_line[start_idx..].find("*/") {
+                let actual_end = start_idx + end_idx + 2;
+                clean_line.replace_range(start_idx..actual_end, "");
+            } else {
+                break;
+            }
+        }
         let trimmed = clean_line.trim();
 
         // Gestione dei commenti multilinea

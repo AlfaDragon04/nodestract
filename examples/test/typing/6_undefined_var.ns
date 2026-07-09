@@ -1,0 +1,16 @@
+importa italiano da translate
+importa * da nio
+
+crea errore_rilevato = falso
+prova {
+    crea y = x + 10
+} cattura (e) {
+    errore_rilevato = vero
+    stampa("Errore catturato per variabile non definita: ", e)
+}
+
+se (errore_rilevato) {
+    stampa("Test Variabili Non Definite: OK")
+} altrimenti {
+    stampa("FAIL: Nessun errore sollevato per variabile non definita")
+}

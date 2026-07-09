@@ -94,6 +94,21 @@ impl Interpreter {
         Value::Null
     }
 
+    pub fn has_var(&self, name: &str) -> bool {
+        let start_idx = self.fn_scope_starts.last().cloned().unwrap_or(0);
+        for idx in (start_idx..self.scopes.len()).rev() {
+            if self.scopes[idx].contains_key(name) {
+                return true;
+            }
+        }
+        if start_idx > 0 {
+            if self.scopes[0].contains_key(name) {
+                return true;
+            }
+        }
+        false
+    }
+
 
 
     pub fn define_var(&mut self, name: String, value: Value, is_mutable: bool) {

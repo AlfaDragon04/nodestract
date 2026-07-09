@@ -19,7 +19,7 @@ fn get_client() -> Client {
         .unwrap_or_else(|_| Client::new())
 }
 
-fn perform_request<F>(method_name: &str, url: &str, request_fn: F) -> Value 
+fn perform_request<F>(method_name: &str, url: &str, request_fn: F) -> Result<Value, String> 
 where F: Fn(&Client) -> Result<reqwest::blocking::Response, reqwest::Error> 
 {
     let client = get_client();
@@ -33,10 +33,9 @@ where F: Fn(&Client) -> Result<reqwest::blocking::Response, reqwest::Error>
                 
                 if status.is_success() {
                     return match resp.text() {
-                        Ok(text) => Value::String(text),
+                        Ok(text) => Ok(Value::String(text)),
                         Err(e) => {
-                            println!("NET ERROR [{}]: Body read failed. {}", method_name, e);
-                            Value::Null
+                            Err(format!("NET ERROR [{}]: Body read failed. {}", method_name, e))
                         }
                     };
                 } 
@@ -44,35 +43,29 @@ where F: Fn(&Client) -> Result<reqwest::blocking::Response, reqwest::Error>
                 // Retry su errori server (5xx)
                 if (status.is_server_error() || status.as_u16() == 429) && attempt <= MAX_RETRIES {
                     let wait = Duration::from_millis(500 * 2_u64.pow(attempt - 1));
-                    println!("NET INFO: {} {} failed ({}). Retrying in {:?}...", method_name, url, status, wait);
                     thread::sleep(wait);
                     continue;
                 }
 
-                if status.as_u16() != 404 {
-                    println!("NET WARNING: HTTP {} on {} '{}'", status, method_name, url);
-                }
-                return Value::Null;
+                return Err(format!("NET ERROR [{}]: HTTP {} on '{}'", method_name, status, url));
             },
             Err(e) => {
                 if attempt <= MAX_RETRIES {
                     let wait = Duration::from_millis(500 * 2_u64.pow(attempt - 1));
-                    println!("NET INFO: Connection error during {}. Retrying in {:?}...", method_name, wait);
                     thread::sleep(wait);
                     continue;
                 }
-                println!("NET ERROR: {} {} failed after {} attempts. {}", method_name, url, MAX_RETRIES, e);
-                return Value::Null;
+                return Err(format!("NET ERROR: {} {} failed after {} attempts. {}", method_name, url, MAX_RETRIES, e));
             }
         }
     }
 }
 
-pub fn get(url: &str) -> Value {
+pub fn get(url: &str) -> Result<Value, String> {
     perform_request("GET", url, |client| client.get(url).send())
 }
 
-pub fn post(url: &str, body: &str) -> Value {
+pub fn post(url: &str, body: &str) -> Result<Value, String> {
     let body_string = body.to_string(); 
     perform_request("POST", url, move |client| {
         client.post(url)

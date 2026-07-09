@@ -191,11 +191,26 @@ impl Interpreter {
                 }
 
                 if let Some(finally_stmts) = finally_block {
+                    let saved_return = self.last_return.take();
+                    let saved_break = self.loop_break;
+                    let saved_continue = self.loop_continue;
+                    let saved_exception = self.exception.take();
+
+                    self.loop_break = false;
+                    self.loop_continue = false;
+
                     self.enter_scope();
                     for s in finally_stmts {
                         self.execute_statement(s);
                     }
                     self.exit_scope();
+
+                    if self.last_return.is_none() && !self.loop_break && !self.loop_continue && self.exception.is_none() {
+                        self.last_return = saved_return;
+                        self.loop_break = saved_break;
+                        self.loop_continue = saved_continue;
+                        self.exception = saved_exception;
+                    }
                 }
             }
             Statement::ThrowStatement { value } => {

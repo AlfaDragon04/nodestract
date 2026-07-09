@@ -1,0 +1,20 @@
+importa italiano da translate
+importa * da nio
+
+crea finally_eseguito = falso
+
+funzione test_finally() {
+    prova {
+        ritorna 10
+    } infine {
+        finally_eseguito = vero
+    }
+}
+
+test_finally()
+
+se (finally_eseguito) {
+    stampa("Test Finally Block: OK")
+} altrimenti {
+    stampa("FAIL: Il blocco finally non è stato eseguito dopo il return")
+}

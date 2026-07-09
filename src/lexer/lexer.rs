@@ -191,6 +191,7 @@ impl Lexer {
     fn read_string(&mut self) -> Token {
         self.position += 1; 
         let mut text = String::new();
+        let mut closed = false;
         while self.position < self.input.len() {
             let c = self.input[self.position];
             if c == '\\' {
@@ -203,12 +204,19 @@ impl Lexer {
                         _ => text.push(escaped_char),
                     }
                 }
-            } else if c == '"' { break; } 
+            } else if c == '"' { 
+                closed = true;
+                break; 
+            } 
             else { text.push(c); }
             self.position += 1;
         }
-        self.position += 1;
-        Token::StringLiteral(text)
+        if closed {
+            self.position += 1;
+            Token::StringLiteral(text)
+        } else {
+            Token::Unknown('"')
+        }
     }
 
     fn read_number(&mut self) -> Token {
@@ -217,7 +225,13 @@ impl Lexer {
         while self.position < self.input.len() {
             let c = self.input[self.position];
             if c.is_numeric() { self.position += 1; } 
-            else if c == '.' && !has_dot { has_dot = true; self.position += 1; } 
+            else if c == '.' && !has_dot {
+                if self.position + 1 < self.input.len() && self.input[self.position + 1] == '.' {
+                    break;
+                }
+                has_dot = true;
+                self.position += 1;
+            } 
             else { break; }
         }
         let text: String = self.input[start..self.position].iter().collect();

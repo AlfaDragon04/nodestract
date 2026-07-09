@@ -40,7 +40,13 @@ impl Interpreter {
             "read" => {
                 if let Some(path_expr) = args.get(0) {
                     let path_val = self.eval_expression(path_expr);
-                    fs::read_file(&path_val.to_string())
+                    match fs::read_file(&path_val.to_string()) {
+                        Ok(val) => val,
+                        Err(e) => {
+                            self.exception = Some(Value::String(e));
+                            Value::Null
+                        }
+                    }
                 } else {
                     Value::Null
                 }
@@ -49,7 +55,13 @@ impl Interpreter {
                 if args.len() >= 2 {
                     let path_val = self.eval_expression(&args[0]);
                     let content_val = self.eval_expression(&args[1]);
-                    fs::write_file(&path_val.to_string(), &content_val)
+                    match fs::write_file(&path_val.to_string(), &content_val) {
+                        Ok(val) => val,
+                        Err(e) => {
+                            self.exception = Some(Value::String(e));
+                            Value::Boolean(false)
+                        }
+                    }
                 } else {
                     Value::Boolean(false)
                 }
@@ -57,7 +69,13 @@ impl Interpreter {
             "delete" => {
                 if let Some(path_expr) = args.get(0) {
                     let path_val = self.eval_expression(path_expr);
-                    fs::delete_file(&path_val.to_string())
+                    match fs::delete_file(&path_val.to_string()) {
+                        Ok(val) => val,
+                        Err(e) => {
+                            self.exception = Some(Value::String(e));
+                            Value::Boolean(false)
+                        }
+                    }
                 } else {
                     Value::Boolean(false)
                 }
@@ -238,7 +256,13 @@ impl Interpreter {
             "fetch" => {
                 if let Some(url_expr) = args.get(0) {
                     let url_val = self.eval_expression(url_expr);
-                    net::get(&url_val.to_string())
+                    match net::get(&url_val.to_string()) {
+                        Ok(val) => val,
+                        Err(e) => {
+                            self.exception = Some(Value::String(e));
+                            Value::Null
+                        }
+                    }
                 } else {
                     Value::Null
                 }
@@ -247,7 +271,13 @@ impl Interpreter {
                 if args.len() >= 2 {
                     let url_val = self.eval_expression(&args[0]);
                     let body_val = self.eval_expression(&args[1]);
-                    net::post(&url_val.to_string(), &body_val.to_string())
+                    match net::post(&url_val.to_string(), &body_val.to_string()) {
+                        Ok(val) => val,
+                        Err(e) => {
+                            self.exception = Some(Value::String(e));
+                            Value::Null
+                        }
+                    }
                 } else {
                     Value::Null
                 }
