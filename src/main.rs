@@ -18,7 +18,7 @@ fn main() {
     match command.as_str() {
         "build" => {
             if args.len() < 3 {
-                welcome::show_error("Missing filename. Usage: nsc build <filename.ns>");
+                welcome::show_error("Missing filename. Usage: cargo run -- build <filename.ns>");
                 return;
             }
             let filename = &args[2];

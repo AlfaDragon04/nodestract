@@ -10,24 +10,17 @@ La caratteristica distintiva di NodeStract è il supporto dinamico e concorrente
 
 Tutta la documentazione dettagliata del progetto è organizzata nella cartella `docs/`. Di seguito trovi i link diretti ai documenti principali:
 
-1. [**Manuale d'Uso (docs/ManualeUso.md)**](file:///w:/University/3o%20anno/ICDD/Esame/Progetto/NodeStract/docs/ManualeUso.md)
+1. [**Manuale d'Uso (docs/ManualeUso.md)**](docs/ManualeUso.md)
    Una guida dettagliata per l'utente che spiega l'installazione del compilatore, la sintassi del linguaggio, la gestione del vocabolario multi-lingua e l'utilizzo dei moduli standard (`nio`, `nfs`, `nmath`, `nnet`).
    
-2. [**Documentazione Tecnica (docs/DocumentazioneTecnica.md)**](file:///w:/University/3o%20anno/ICDD/Esame/Progetto/NodeStract/docs/DocumentazioneTecnica.md)
+2. [**Documentazione Tecnica (docs/DocumentazioneTecnica.md)**](docs/DocumentazioneTecnica.md)
    L'analisi dell'architettura interna dell'interprete scritto in Rust. Spiega nel dettaglio le fasi di importazione, lexing (analisi lessicale), parsing (analisi sintattica), AST (Abstract Syntax Tree) e l'esecuzione del codice.
    
-3. [**Analisi Critica (docs/AnalisiCritica.md)**](file:///w:/University/3o%20anno/ICDD/Esame/Progetto/NodeStract/docs/AnalisiCritica.md)
+3. [**Analisi Critica (docs/AnalisiCritica.md)**](docs/AnalisiCritica.md)
    Un'analisi onesta dei punti di forza, dei limiti strutturali dell'interprete attuale, delle scelte progettuali e delle sessioni di test effettuate per validarne il funzionamento.
 
-4. [**Specifiche del Linguaggio (docs/SpecificheLinguaggio.md)**](file:///w:/University/3o%20anno/ICDD/Esame/Progetto/NodeStract/docs/SpecificheLinguaggio.md)
+4. [**Specifiche del Linguaggio (docs/SpecificheLinguaggio.md)**](docs/SpecificheLinguaggio.md)
    Il documento formale delle specifiche sintattiche e delle regole del linguaggio NodeStract.
-
----
-
-## Analisi Strutturale ed Errori Rilevati
-
-Se sei un manutentore o desideri consultare le note di sviluppo relative ai bug o alle incoerenze logiche e architetturali riscontrate nell'attuale codice sorgente, fai riferimento al file di sviluppo nella root del progetto:
-* [**NextStep.md**](file:///w:/University/3o%20anno/ICDD/Esame/Progetto/NodeStract/NextStep.md)
 
 ---
 
@@ -41,16 +34,31 @@ Il compilatore/interprete di NodeStract è scritto in Rust ed è eseguibile tram
 ### Comandi Principali
 Dalla cartella principale del progetto, puoi eseguire i seguenti comandi:
 
+* **Visualizzare la schermata di benvenuto (welcome screen) ed uso:**
+  ```bash
+  cargo run
+  ```
+
 * **Eseguire un sorgente NodeStract (`.ns`):**
   ```bash
   cargo run -- build <percorso_file.ns>
   ```
   *Esempio:*
   ```bash
-  cargo run -- build examples/it.ns
+  cargo run -- build examples/test/languages/2_it.ns
   ```
 
 * **Visualizzare la versione del compilatore:**
   ```bash
   cargo run -- version
+  ```
+
+* **Eseguire la testsuite unitaria (Unit Test):**
+  ```bash
+  cargo test
+  ```
+
+* **Eseguire la testsuite d'integrazione (Integration Test Suite):**
+  ```bash
+  cargo run --example test_suite
   ```

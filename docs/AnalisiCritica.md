@@ -54,8 +54,3 @@ La suite di test di integrazione (`examples/test/`) copre oltre 50 scenari divis
 4. **net**: Simulazione di richieste GET e POST su server locale e gestione dei tentativi di riconnessione (retry).
 5. **function**: Test di ricorsione, funzioni nidificate, scoping e chiamate dinamiche.
 6. **file**: Suite di 10 test che convalidano la scrittura, lettura, sovrascrittura ed eliminazione sicura di file `.txt` e `.json`.
-
-Per eseguire la test suite completa di integrazione:
-```bash
-cargo run --example test_suite
-```

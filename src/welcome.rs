@@ -17,8 +17,8 @@ pub fn show_banner() {
 
 pub fn show_usage() {
     println!("Usage:");
-    println!("  nsc build <file.ns>                    Compile and run a NodeStract file");
-    println!("  nsc version                            Show version information");
+    println!("  cargo run -- build <file.ns>           Compile and run a NodeStract file");
+    println!("  cargo run -- version                   Show version information");
     println!("\nLanguages supported concurrently: en, it, es, fr, de, pt, ro");
 }
 
