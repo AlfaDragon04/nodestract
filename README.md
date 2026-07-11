@@ -53,12 +53,7 @@ Dalla cartella principale del progetto, puoi eseguire i seguenti comandi:
   cargo run -- version
   ```
 
-* **Eseguire la testsuite unitaria (Unit Test):**
+* **Eseguire tutta la testsuite (Unit Test & Integration Test Suite con dettagli):**
   ```bash
-  cargo test
-  ```
-
-* **Eseguire la testsuite d'integrazione (Integration Test Suite):**
-  ```bash
-  cargo run --example test_suite
+  cargo test -- --nocapture
   ```

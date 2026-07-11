@@ -10,11 +10,11 @@ Il compilatore ed interprete di NodeStract è implementato in Rust. Per poterlo 
 * **Rust** (versione 1.70 o superiore consigliata) e il toolchain **Cargo**. Puoi installarli da [rustup.rs](https://rustup.rs/).
 
 ### Compilazione del Progetto
-Per compilare il compilatore (chiamato `nsc` o `ns`), posizionati nella cartella principale del progetto ed esegui:
+Per compilare il compilatore (chiamato `ns`), posizionati nella cartella principale del progetto ed esegui:
 ```bash
 cargo build --release
 ```
-L'eseguibile compilato sarà disponibile all'interno della cartella `target/release/`.
+L'eseguibile compilato sarà disponibile all'interno della cartella `target/release/` (come `ns.exe` su Windows o `ns` su Linux/macOS).
 
 ---
 

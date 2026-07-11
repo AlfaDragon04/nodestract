@@ -3,6 +3,9 @@ use super::Interpreter;
 
 impl Interpreter {
     pub fn eval_binary_op(&mut self, left: Value, operator: &str, right: Value) -> Value {
+        if self.exception.is_some() {
+            return Value::Null;
+        }
         match (left, right) {
             (Value::Null, Value::Null) => match operator {
                 "==" => Value::Boolean(true),

@@ -135,6 +135,13 @@ impl Interpreter {
         None
     }
 
+    pub fn is_function_defined(&self, func_name: &str) -> bool {
+        match func_name {
+            "print" | "input" | "read" | "write" | "delete" | "sin" | "cos" | "sqrt" | "random" | "round" | "min" | "max" | "abs" | "log" | "pow" | "len" | "sleep" | "exit" | "fetch" | "send" => true,
+            _ => self.functions.contains_key(func_name),
+        }
+    }
+
     pub fn is_function_arity_valid(&self, func_name: &str, args_count: usize) -> bool {
         match func_name {
             "print" => true,

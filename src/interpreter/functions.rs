@@ -10,6 +10,20 @@ use super::net;
 
 impl Interpreter {
     pub fn handle_function_call(&mut self, target: &str, args: &Vec<Expression>) -> Value {
+        if !self.is_function_defined(target) {
+            let err_msg = format!("Runtime Error: Function '{}' is not defined", target);
+            self.exception = Some(Value::String(err_msg));
+            return Value::Null;
+        }
+        if !self.is_function_arity_valid(target, args.len()) {
+            let err_msg = format!(
+                "Arity Mismatch: Function '{}' expects different number of arguments (provided {})",
+                target, args.len()
+            );
+            self.exception = Some(Value::String(err_msg));
+            return Value::Null;
+        }
+
         match target {
             // Operazioni di I/O
             "print" => {
@@ -283,19 +297,9 @@ impl Interpreter {
                 }
             }
 
-            // Fallback per chiamate a funzioni definite dall'utente
             _ => {
                 if let Some(func_stmt) = self.functions.get(target).cloned() {
                     if let Statement::FunctionDecl { params, body, .. } = func_stmt {
-                        if args.len() != params.len() {
-                            let err_msg = format!(
-                                "Arity Mismatch: Function '{}' expects {} arguments, but {} were provided",
-                                target, params.len(), args.len()
-                            );
-                            self.exception = Some(Value::String(err_msg));
-                            return Value::Null;
-                        }
-
                         let mut new_scope = HashMap::new();
                         for (i, param_name) in params.iter().enumerate() {
                             let arg_val = self.eval_expression(&args[i]);

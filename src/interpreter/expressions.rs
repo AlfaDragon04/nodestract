@@ -4,6 +4,9 @@ use super::Interpreter;
 
 impl Interpreter {
     pub fn eval_expression(&mut self, expr: &Expression) -> Value {
+        if self.exception.is_some() {
+            return Value::Null;
+        }
         match expr {
             Expression::LiteralStr(s) => Value::String(s.clone()),
             Expression::LiteralNum(n) => {
