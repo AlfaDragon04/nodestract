@@ -98,5 +98,4 @@ fn run_one_test(path: &str) {
     }
 }
 
-// Include all dynamically generated test functions
 include!(concat!(env!("OUT_DIR"), "/generated_tests.rs"));
