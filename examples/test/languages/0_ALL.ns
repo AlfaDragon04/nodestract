@@ -1,0 +1,141 @@
+// ==========================================
+// 1. Importazioni Multilingua con Commenti
+// ==========================================
+importa italiano da translate // Importa vocabolario Italiano
+import english from translate // Importa vocabolario Inglese
+importar espanol de translate // Importa vocabolario Spagnolo
+importar portugues de translate // Importa vocabolario Portoghese
+importer francais de translate // Importa vocabolario Francese
+importieren deutsch von translate // Importa vocabolario Tedesco
+importa romana din translate // Importa vocabolario Rumeno
+
+// Importazione Modulo I/O in varie lingue
+importa * da nio // Italiano
+import * from nio // Inglese
+importar * de nio // Spagnolo / Portoghese
+importer * de nio // Francese
+importieren * von nio // Tedesco
+importa * din nio // Rumeno
+
+// ==========================================
+// 2. Tracciamento Successi
+// ==========================================
+crea successi = 0
+
+// ==========================================
+// 3. Test Costrutti in Italiano
+// ==========================================
+crea variabile_it = 1
+se (variabile_it == 1) {
+    stampa("1. Costrutto Italiano (crea, se, stampa): OK")
+    successi = successi + 1
+}
+
+// ==========================================
+// 4. Test Costrutti in Inglese
+// ==========================================
+let variable_en = 2
+if (variable_en == 2) {
+    print("2. Costrutto Inglese (let, if, print): OK")
+    successi = successi + 1
+}
+
+// ==========================================
+// 5. Test Costrutti in Spagnolo
+// ==========================================
+crea variable_es = 3 // 'crea' è usato anche in spagnolo
+si (variable_es == 3) {
+    imprimir("3. Costrutto Spagnolo (si, imprimir): OK")
+    successi = successi + 1
+}
+
+// ==========================================
+// 6. Test Costrutti in Francese
+// ==========================================
+crea variable_fr = 4 // 'crea' in francese per let
+si (variable_fr == 4) {
+    imprimer("4. Costrutto Francese (si, imprimer): OK")
+    successi = successi + 1
+}
+
+// ==========================================
+// 7. Test Costrutti in Tedesco
+// ==========================================
+crea variable_de = 5 // 'crea' in tedesco per let
+wenn (variable_de == 5) {
+    drucken("5. Costrutto Tedesco (wenn, drucken): OK")
+    successi = successi + 1
+}
+
+// ==========================================
+// 8. Test Costrutti in Portoghese
+// ==========================================
+crea variable_pt = 6
+se (variable_pt == 6) { // 'se' portoghese
+    imprimir("6. Costrutto Portoghese (se, imprimir): OK")
+    successi = successi + 1
+}
+
+// ==========================================
+// 9. Test Costrutti in Rumeno
+// ==========================================
+crea variable_ro = 7
+daca (variable_ro == 7) {
+    tipareste("7. Costrutto Rumeno (daca, tipareste): OK")
+    successi = successi + 1
+}
+
+// ==========================================
+// 10. Test Ciclo Condizionale Multilingua
+// ==========================================
+// Eseguiamo cicli condizionali con le diverse keyword di ciclo
+crea contatore = 0
+mentre (contatore < 1) { // Italiano
+    contatore = contatore + 1
+}
+
+let counter_en = 0
+while (counter_en < 1) { // Inglese
+    counter_en = counter_en + 1
+}
+
+crea contatore_es = 0
+mientras (contatore_es < 1) { // Spagnolo
+    contatore_es = contatore_es + 1
+}
+
+crea contatore_fr = 0
+tantque (contatore_fr < 1) { // Francese
+    contatore_fr = contatore_fr + 1
+}
+
+crea contatore_de = 0
+solange (contatore_de < 1) { // Tedesco
+    contatore_de = contatore_de + 1
+}
+
+crea contatore_pt = 0
+enquanto (contatore_pt < 1) { // Portoghese
+    contatore_pt = contatore_pt + 1
+}
+
+crea contatore_ro = 0
+cat timp (contatore_ro < 1) { // Rumeno
+    contatore_ro = contatore_ro + 1
+}
+
+se (contatore == 1 && counter_en == 1 && contatore_es == 1 && contatore_fr == 1 && contatore_de == 1 && contatore_pt == 1 && contatore_ro == 1) {
+    stampa("8. Cicli Multilingua (mentre, while, mientras, tantque, solange, enquanto, cat timp): OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Cicli Multilingua falliti")
+}
+
+// ==========================================
+// 11. Resoconto Finale
+// ==========================================
+se (successi == 8) {
+    stampa("TUTTI I TEST LINGUE OK (0_ALL)")
+} altrimenti {
+    stampa("FAIL: Alcuni test lingue in 0_ALL sono falliti. Successi:", successi)
+}

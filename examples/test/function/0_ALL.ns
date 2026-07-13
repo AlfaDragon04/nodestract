@@ -1,0 +1,169 @@
+importa italiano da translate
+importa * da nio
+
+// ==========================================
+// 1. Variabili Globali e Tracciamento
+// ==========================================
+crea successi = 0
+crea variabile_globale = 1000
+
+// ==========================================
+// 2. Ricorsione Semplice (Fattoriale)
+// ==========================================
+funzione fattoriale(n) {
+    se (n <= 1) {
+        ritorna 1
+    }
+    ritorna n * fattoriale(n - 1)
+}
+
+crea ris_fatt = fattoriale(5)
+se (ris_fatt == 120) {
+    stampa("1. Ricorsione semplice (fattoriale): OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Ricorsione semplice errata:", ris_fatt)
+}
+
+// ==========================================
+// 3. Ricorsione Mutua (Pari / Dispari)
+// ==========================================
+funzione e_pari(n) {
+    se (n == 0) {
+        ritorna vero
+    }
+    ritorna e_dispari(n - 1)
+}
+
+funzione e_dispari(n) {
+    se (n == 0) {
+        ritorna falso
+    }
+    ritorna e_pari(n - 1)
+}
+
+crea ris_pari = e_pari(4)
+crea ris_dispari = e_dispari(4)
+se (ris_pari == vero && ris_dispari == falso) {
+    stampa("2. Ricorsione mutua (pari/dispari): OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Ricorsione mutua fallita")
+}
+
+// ==========================================
+// 4. Scoping Lessicale Rigido
+// ==========================================
+funzione leggi_x_scoping() {
+    // Deve leggere variabile_globale (1000) e non quella di chiamante_scoping
+    ritorna variabile_globale
+}
+
+funzione chiamante_scoping() {
+    crea variabile_globale = 555
+    ritorna leggi_x_scoping()
+}
+
+crea ris_scoping = chiamante_scoping()
+se (ris_scoping == 1000) {
+    stampa("3. Scoping lessicale rigido: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Errore nello scoping lessicale, riscontrato:", ris_scoping)
+}
+
+// ==========================================
+// 5. Funzioni Annidate
+// ==========================================
+funzione contenitore(valore) {
+    funzione moltiplicatore(x) {
+        ritorna x * 10
+    }
+    crea ris_interno = moltiplicatore(valore)
+    ritorna ris_interno
+}
+
+crea ris_annidata = contenitore(5)
+se (ris_annidata == 50) {
+    stampa("4. Funzione annidata locale: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Funzione annidata fallita:", ris_annidata)
+}
+
+// ==========================================
+// 6. Chiamata Dinamica (Dynamic String Fallback)
+// ==========================================
+funzione target_chiamata_dinamica(parametro) {
+    ritorna parametro + "_chiamato"
+}
+
+crea nome_funzione_stringa = "target_chiamata_dinamica"
+crea ris_dinamica = nome_funzione_stringa("test")
+
+se (ris_dinamica == "test_chiamato") {
+    stampa("5. Chiamata dinamica tramite stringa: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Chiamata dinamica fallita:", ris_dinamica)
+}
+
+// ==========================================
+// 7. Gestione Mismatch Parametri / Argomenti
+// ==========================================
+funzione due_argomenti(a, b) {
+    ritorna a + b
+}
+
+crea fallito_mismatch_1 = falso
+prova {
+    // Troppi argomenti
+    due_argomenti(1, 2, 3)
+} cattura (e) {
+    fallito_mismatch_1 = vero
+}
+
+crea fallito_mismatch_2 = falso
+prova {
+    // Troppo pochi argomenti
+    due_argomenti(1)
+} cattura (e) {
+    fallito_mismatch_2 = vero
+}
+
+se (fallito_mismatch_1 == vero && fallito_mismatch_2 == vero) {
+    stampa("6. Gestione errore mismatch argomenti: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Gestione errore mismatch argomenti fallita")
+}
+
+// ==========================================
+// 8. Funzione con return multipli e anticipati
+// ==========================================
+funzione early_return(cond) {
+    se (cond) {
+        ritorna "si"
+    }
+    // Istruzione che non deve essere eseguita se cond è vero
+    crea spazzatura = 123
+    ritorna "no"
+}
+
+crea ris_early_si = early_return(vero)
+crea ris_early_no = early_return(falso)
+se (ris_early_si == "si" && ris_early_no == "no") {
+    stampa("7. Ritorno anticipato (early return): OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Ritorno anticipato fallito")
+}
+
+// ==========================================
+// 9. Resoconto Finale
+// ==========================================
+se (successi == 7) {
+    stampa("TUTTI I TEST FUNZIONI OK (0_ALL)")
+} altrimenti {
+    stampa("FAIL: Alcuni test funzioni in 0_ALL sono falliti. Successi:", successi)
+}

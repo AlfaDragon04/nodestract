@@ -1,0 +1,22 @@
+importa italiano da translate
+importa * da nio
+
+// Questo codice globale viene eseguito prima del main!
+crea x = 10
+x = 99
+
+// Questa funzione NON deve auto-eseguirsi alla dichiarazione!
+// Se si auto-eseguisse, modificherebbe x a 500.
+funzione non_chiamata() {
+    x = 500
+}
+
+funzione main() {
+    // Se il codice globale è stato correttamente eseguito, x vale 99.
+    // Se la funzione non_chiamata non si è auto-eseguita, x è ancora 99 e non 500.
+    se (x == 99) {
+        stampa("Main entry-point and global execution flow: OK")
+    } altrimenti {
+        stampa("FAIL: main entry-point or auto-execution flow error. x =", x)
+    }
+}

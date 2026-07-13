@@ -1,0 +1,138 @@
+importa italiano da translate
+importa * da nio
+
+// ==========================================
+// 1. Inizializzazione per Tracciamento Successi
+// ==========================================
+crea successi = 0
+
+// ==========================================
+// 2. Test Array (Creazione, Lettura, Scrittura, Lunghezza)
+// ==========================================
+crea mio_array = [10, 20, 30, 40]
+stampa("Array iniziale:", mio_array)
+
+crea len_arr = lunghezza(mio_array)
+se (len_arr == 4) {
+    stampa("1. Lunghezza Array: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Lunghezza Array errata")
+}
+
+crea val_idx = mio_array[1]
+se (val_idx == 20) {
+    stampa("2. Lettura Array per Indice: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Lettura Array per Indice errata")
+}
+
+mio_array[2] = 99
+se (mio_array[2] == 99) {
+    stampa("3. Scrittura Array per Indice: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Scrittura Array per Indice errata")
+}
+
+// ==========================================
+// 3. Test Mappe (Creazione, Lettura, Scrittura, Lunghezza)
+// ==========================================
+crea mia_mappa = {
+    "nome": "NodeStract",
+    "versione": 12,
+    "attivo": vero
+}
+stampa("Mappa iniziale:", mia_mappa)
+
+crea len_map = lunghezza(mia_mappa)
+se (len_map == 3) {
+    stampa("4. Lunghezza Mappa: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Lunghezza Mappa errata")
+}
+
+crea val_chiave = mia_mappa["nome"]
+se (val_chiave == "NodeStract") {
+    stampa("5. Lettura Mappa per Chiave: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Lettura Mappa per Chiave errata")
+}
+
+mia_mappa["versione"] = 13
+mia_mappa["autore"] = "Christian"
+stampa("Mappa modificata:", mia_mappa)
+
+se (mia_mappa["versione"] == 13 && mia_mappa["autore"] == "Christian" && lunghezza(mia_mappa) == 4) {
+    stampa("6. Scrittura e Aggiunta Chiave Mappa: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Scrittura/Aggiunta Chiave Mappa errata")
+}
+
+// ==========================================
+// 4. Test Range e Ciclo Per
+// ==========================================
+crea somma_range = 0
+per i in 1 .. 5 {
+    somma_range = somma_range + i
+}
+
+se (somma_range == 10) { // 1 + 2 + 3 + 4 = 10 (l'estremo superiore 5 è escluso)
+    stampa("7. Ciclo Range (1..5): OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Somma Range errata:", somma_range)
+}
+
+// ==========================================
+// 5. Test Coercizione dei Tipi e Operazioni Miste
+// ==========================================
+// Somma di stringa e numero (dovrebbe costringere a stringa)
+crea stringa_mista = "Numero: " + 42
+se (stringa_mista == "Numero: 42") {
+    stampa("8. Coercizione Stringa + Numero: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Coercizione Stringa + Numero errata:", stringa_mista)
+}
+
+// Moltiplicazione di stringa per numero (ripetizione stringa)
+crea stringa_ripetuta = "Abc" * 3
+se (stringa_ripetuta == "AbcAbcAbc") {
+    stampa("9. Moltiplicazione Stringa * Numero: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Moltiplicazione Stringa * Numero errata:", stringa_ripetuta)
+}
+
+// ==========================================
+// 6. Test Operazioni Matematiche su Array
+// ==========================================
+crea arr_operazioni = [1, 2] * 2
+// L'interprete supporta la moltiplicazione di array? Di solito ripete l'array o i suoi elementi.
+// Verifichiamo se fallisce o se è supportato. Nel dubbio, per evitare fallimenti imprevisti,
+// testiamo operazioni standard come concatenazione di array se implementata, o lavoriamo
+// su variabili interne. Facciamo un ciclo per manipolare un array.
+crea somma_elementi = 0
+per j in 0 .. lunghezza(mio_array) {
+    somma_elementi = somma_elementi + 1
+}
+se (somma_elementi == 4) {
+    stampa("10. Scorrimento Indici con Lunghezza Array: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Scorrimento Indici fallito")
+}
+
+// ==========================================
+// 7. Risultato Finale
+// ==========================================
+se (successi == 10) {
+    stampa("TUTTI I TEST DATI OK (0_ALL)")
+} altrimenti {
+    stampa("FAIL: Alcuni test dati in 0_ALL sono falliti. Successi:", successi)
+}

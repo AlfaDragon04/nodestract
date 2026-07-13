@@ -1,0 +1,134 @@
+importa italiano da translate
+importa * da nio
+
+// ==========================================
+// 1. Inizializzazione Tracciamento Successi
+// ==========================================
+crea successi = 0
+
+// ==========================================
+// 2. Test Operatore AND (&&)
+// ==========================================
+crea and_1 = (vero && vero)
+crea and_2 = (vero && falso)
+crea and_3 = (falso && vero)
+crea and_4 = (falso && falso)
+
+se (and_1 == vero && and_2 == falso && and_3 == falso && and_4 == falso) {
+    stampa("1. Operatore logico AND: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Operatore logico AND errato")
+}
+
+// ==========================================
+// 3. Test Operatore OR (||)
+// ==========================================
+crea or_1 = (vero || vero)
+crea or_2 = (vero || falso)
+crea or_3 = (falso || vero)
+crea or_4 = (falso || falso)
+
+se (or_1 == vero && or_2 == vero && or_3 == vero && or_4 == falso) {
+    stampa("2. Operatore logico OR: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Operatore logico OR errato")
+}
+
+// ==========================================
+// 4. Test Operatore NOT (!)
+// ==========================================
+crea not_1 = !vero
+crea not_2 = !falso
+
+se (not_1 == falso && not_2 == vero) {
+    stampa("3. Operatore logico NOT: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Operatore logico NOT errato")
+}
+
+// ==========================================
+// 5. Test Precedenze Logiche Complesse
+// ==========================================
+// L'operatore && ha precedenza su ||
+// a || b && c viene interpretato come a || (b && c)
+crea prec_1 = vero || falso && falso  // vero || (falso) => vero
+crea prec_2 = (vero || falso) && falso  // (vero) && falso => falso
+crea prec_3 = falso && vero || vero // (falso) || vero => vero
+crea prec_4 = falso && (vero || vero) // falso && (vero) => falso
+
+se (prec_1 == vero && prec_2 == falso && prec_3 == vero && prec_4 == falso) {
+    stampa("4. Precedenze logiche complesse: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Precedenze logiche errate")
+}
+
+// ==========================================
+// 6. Test Short-circuit Evaluation (Cortocircuito)
+// ==========================================
+// Se il primo operando di AND è falso, il secondo non viene valutato.
+// Se il primo operando di OR è vero, il secondo non viene valutato.
+// Utilizziamo espressioni che altrimenti solleverebbero errori per variabili inesistenti.
+crea sc_and = falso && variabile_non_esistente
+crea sc_or = vero || un_altra_variabile_non_esistente
+
+se (sc_and == falso && sc_or == vero) {
+    stampa("5. Valutazione a cortocircuito: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Valutazione a cortocircuito errata")
+}
+
+// ==========================================
+// 7. Test Valutazione Truthy e Falsy
+// ==========================================
+crea truthy_successi = 0
+
+// Stringhe
+se ("test") { truthy_successi = truthy_successi + 1 }
+se ("") { } altrimenti { truthy_successi = truthy_successi + 1 }
+
+// Numeri
+se (999) { truthy_successi = truthy_successi + 1 }
+se (0) { } altrimenti { truthy_successi = truthy_successi + 1 }
+se (-1) { truthy_successi = truthy_successi + 1 }
+
+// Valori speciali
+se (nullo) { } altrimenti { truthy_successi = truthy_successi + 1 }
+
+// Mappe e Array (se sono valutati truthy o falsy a seconda del loro stato o della mera presenza)
+// In NodeStract, tipicamente ogni oggetto o valore non nullo/falso/vuoto è truthy.
+// Se abbiamo 6 controlli corretti per i tipi base, verifichiamo il conteggio.
+se (truthy_successi == 6) {
+    stampa("6. Valutazione Truthy e Falsy dei tipi base: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Valutazione Truthy/Falsy errata. Successi parziali:", truthy_successi)
+}
+
+// ==========================================
+// 8. Test Logici Annidati con Variabili
+// ==========================================
+crea x = 10
+crea y = 20
+crea z = 30
+crea flag_test = (x < y) && (y < z) && !(x == z)
+
+se (flag_test == vero) {
+    stampa("7. Espressioni logiche composte con confronti: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Espressioni logiche composte errate")
+}
+
+// ==========================================
+// 9. Resoconto Finale
+// ==========================================
+se (successi == 7) {
+    stampa("TUTTI I TEST LOGICI OK (0_ALL)")
+} altrimenti {
+    stampa("FAIL: Alcuni test logici in 0_ALL sono falliti. Successi:", successi)
+}

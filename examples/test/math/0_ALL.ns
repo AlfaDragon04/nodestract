@@ -1,0 +1,128 @@
+importa italiano da translate
+importa * da nio
+importa * da nmath
+
+// ==========================================
+// 1. Inizializzazione Tracciamento
+// ==========================================
+crea successi = 0
+
+// ==========================================
+// 2. Test Radice Quadrata (radq)
+// ==========================================
+crea r1 = radq(100)
+crea r2 = radq(0)
+crea r3 = radq(2.25) // dovrebbe essere 1.5
+
+se (r1 == 10 && r2 == 0 && r3 == 1.5) {
+    stampa("1. Radice Quadrata (radq): OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Radice Quadrata errata:", r1, r2, r3)
+}
+
+// ==========================================
+// 3. Test Potenza e Logaritmo (potenza, logaritmo)
+// ==========================================
+crea p1 = potenza(2, 5) // 32
+crea p2 = potenza(10, 0) // 1
+crea p3 = potenza(5, -1) // 0.2
+crea l1 = logaritmo(1) // dovrebbe essere 0
+// L'interprete di solito calcola il logaritmo naturale (ln).
+// ln(e) = 1. Proviamo a verificare approssimativamente.
+
+se (p1 == 32 && p2 == 1 && p3 == 0.2 && l1 == 0) {
+    stampa("2. Potenza e Logaritmo: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Potenza o Logaritmo errati")
+}
+
+// ==========================================
+// 4. Test Minimo e Massimo (minimo, massimo)
+// ==========================================
+crea min_1 = minimo(10, 20) // 10
+crea min_2 = minimo(-5, -15) // -15
+crea max_1 = massimo(10, 20) // 20
+crea max_2 = massimo(-5, -15) // -5
+
+se (min_1 == 10 && min_2 == -15 && max_1 == 20 && max_2 == -5) {
+    stampa("3. Minimo e Massimo: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Minimo o Massimo errati")
+}
+
+// ==========================================
+// 5. Test Assoluto e Arrotondamento (assoluto, arrotonda)
+// ==========================================
+crea abs_1 = assoluto(10.5) // 10.5
+crea abs_2 = assoluto(-42) // 42
+crea rnd_1 = arrotonda(4.3) // dovrebbe essere 4
+crea rnd_2 = arrotonda(4.7) // dovrebbe essere 5
+crea rnd_3 = arrotonda(-4.5) // arrotondamento vicino a intero
+
+se (abs_1 == 10.5 && abs_2 == 42 && rnd_1 == 4 && rnd_2 == 5) {
+    stampa("4. Assoluto e Arrotondamento: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Assoluto o Arrotondamento errati")
+}
+
+// ==========================================
+// 6. Test Trigonometria (sen, cos)
+// ==========================================
+// sen(0) = 0, cos(0) = 1
+crea s1 = sen(0)
+crea c1 = cos(0)
+
+// Verifica con tolleranza per eventuali problemi di floating point
+crea s1_ok = (s1 >= -0.0001 && s1 <= 0.0001)
+crea c1_ok = (c1 >= 0.9999 && c1 <= 1.0001)
+
+se (s1_ok && c1_ok) {
+    stampa("5. Trigonometria (sen/cos a 0): OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Trigonometria errata, sen(0):", s1, "cos(0):", c1)
+}
+
+// ==========================================
+// 7. Test Numeri Casuali (casuale)
+// ==========================================
+crea rand_val_1 = casuale()
+crea rand_val_2 = casuale()
+
+crea range_ok_1 = (rand_val_1 >= 0.0 && rand_val_1 <= 1.0)
+crea range_ok_2 = (rand_val_2 >= 0.0 && rand_val_2 <= 1.0)
+crea diversi = (rand_val_1 != rand_val_2)
+
+se (range_ok_1 && range_ok_2 && diversi) {
+    stampa("6. Generatore Casuale (casuale): OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Generatore Casuale non valido. Val1:", rand_val_1, "Val2:", rand_val_2)
+}
+
+// ==========================================
+// 8. Espressioni Algebriche Composte
+// ==========================================
+// Combinazione di radq, potenza, assoluto, minimo e massimo
+crea ipotenusa = radq(potenza(3, 2) + potenza(4, 2)) // radq(9 + 16) = radq(25) = 5
+crea combinazione = assoluto(minimo(-100, massimo(-50, -200))) // assoluto(minimo(-100, -50)) = assoluto(-100) = 100
+
+se (ipotenusa == 5 && combinazione == 100) {
+    stampa("7. Calcoli algebrici complessi composti: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Calcoli algebrici complessi falliti")
+}
+
+// ==========================================
+// 9. Resoconto Finale
+// ==========================================
+se (successi == 7) {
+    stampa("TUTTI I TEST MATEMATICI OK (0_ALL)")
+} altrimenti {
+    stampa("FAIL: Alcuni test matematici in 0_ALL sono falliti. Successi:", successi)
+}

@@ -1,0 +1,101 @@
+importa italiano da translate
+importa * da nio
+importa * da nnet
+
+// ==========================================
+// 1. Inizializzazione Tracciamento
+// ==========================================
+crea successi = 0
+
+// ==========================================
+// 2. Richiesta GET Successo (http://127.0.0.1:12345/success)
+// ==========================================
+crea get_ok = falso
+crea ris_get = richiedi("http://127.0.0.1:12345/success")
+stampa("Risultato GET successo:", ris_get)
+
+se (ris_get == "Hello NodeStract") {
+    stampa("1. Richiesta GET successosa: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Richiesta GET successosa fallita")
+}
+
+// ==========================================
+// 3. Richiesta GET Not Found (http://127.0.0.1:12345/notfound)
+// ==========================================
+crea get_notfound_catturato = falso
+prova {
+    richiedi("http://127.0.0.1:12345/notfound")
+} cattura (e) {
+    stampa("Errore catturato correttamente per 404:", e)
+    get_notfound_catturato = vero
+}
+
+se (get_notfound_catturato == vero) {
+    stampa("2. Richiesta GET Not Found Gestita: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Richiesta GET Not Found non ha sollevato eccezione")
+}
+
+// ==========================================
+// 4. Richiesta POST Successo (http://127.0.0.1:12345/post)
+// ==========================================
+crea mappa_payload = {
+    "chiave": "valore_inviato",
+    "numero": 42
+}
+// Serializza la mappa in stringa JSON prima dell'invio se richiesto, oppure
+// proviamo a inviarla direttamente se 'invia' lo supporta. Nel dubbio,
+// il test 3_post_success.ns usa invia con stringa o con mappa? Controlliamo.
+// Ad ogni modo, usiamo invia con un payload.
+crea ris_post = invia("http://127.0.0.1:12345/post", "{\"chiave\": \"valore_inviato\"}")
+stampa("Risultato POST successo:", ris_post)
+
+se (ris_post == "POST received") {
+    stampa("3. Richiesta POST successosa: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Richiesta POST successosa fallita")
+}
+
+// ==========================================
+// 5. Richiesta GET con Retry Automatico (http://127.0.0.1:12345/retry)
+// ==========================================
+crea ris_retry = richiedi("http://127.0.0.1:12345/retry")
+stampa("Risultato Retry:", ris_retry)
+
+se (ris_retry == "Retry success") {
+    stampa("4. Richiesta GET con Retry: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Richiesta GET con Retry fallita")
+}
+
+// ==========================================
+// 6. Richiesta GET con URL non valido / non raggiungibile
+// ==========================================
+crea invalid_url_catturato = falso
+prova {
+    richiedi("http://127.0.0.1:99999/invalid")
+} cattura (e) {
+    stampa("Errore catturato correttamente per URL non valido:", e)
+    invalid_url_catturato = vero
+}
+
+se (invalid_url_catturato == vero) {
+    stampa("5. Gestione URL non valido/raggiungibile: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Richiesta URL non valido non ha sollevato eccezione")
+}
+
+// ==========================================
+// 7. Resoconto Finale
+// ==========================================
+se (successi == 5) {
+    stampa("TUTTI I TEST DI RETE OK (0_ALL)")
+} altrimenti {
+    stampa("FAIL: Alcuni test di rete in 0_ALL sono falliti. Successi:", successi)
+}

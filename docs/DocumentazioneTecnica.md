@@ -70,7 +70,7 @@ Una volta superati i controlli, genera l'AST in base alla precedenza degli opera
 ### Fase 5: Esecuzione dell'Interprete (`interpreter.rs`)
 L'interprete esegue le istruzioni dell'AST.
 * La tabella dei simboli è memorizzata in un vettore di mappe (`scopes`). Ogni blocco (`{ ... }`) o chiamata di funzione spinge una nuova mappa nel vettore per gestire la visibilità locale.
-* L'interprete adotta una semantica di entry-point: se nel file sorgente è presente una funzione di nome `main`, vengono registrate solo le dichiarazioni di funzione e l'esecuzione parte **esclusivamente** dal corpo di `main` — le istruzioni globali scritte al di fuori di essa sono ignorate. In assenza di `main`, il programma viene eseguito in modalità script, scorrendo le istruzioni globali top-to-bottom. In entrambi i casi, nessuna funzione si auto-esegue mai: viene eseguita solo se chiamata esplicitamente.
+* L'interprete esegue il programma in due passaggi: prima esegue tutte le istruzioni globali dall'alto verso il basso (definendo variabili, registrando funzioni globali, ed eseguendo espressioni). Successivamente, se nel programma è presente una funzione di nome `main`, ne esegue anche il corpo. In nessun caso le dichiarazioni di funzione (inclusa `main`) causano l'auto-esecuzione del loro corpo al momento della definizione; il codice di una funzione viene eseguito solo in seguito a una chiamata esplicita.
 
 ---
 

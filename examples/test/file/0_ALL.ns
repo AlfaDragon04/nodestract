@@ -1,0 +1,153 @@
+importa italiano da translate
+importa * da nio
+importa * da nfs
+
+// ==========================================
+// 1. Inizializzazione Tracciamento
+// ==========================================
+crea successi = 0
+
+// ==========================================
+// 2. Test File TXT (Scrittura, Lettura, Sovrascrittura, Eliminazione)
+// ==========================================
+crea txt_path = "temp_all_test.txt"
+
+// Scrittura
+crea txt_scrivi_1 = scrivi(txt_path, "Riga di test 1")
+se (txt_scrivi_1 == vero) {
+    stampa("1. Scrittura TXT: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Scrittura TXT fallita")
+}
+
+// Lettura
+crea txt_leggi_1 = leggi(txt_path)
+se (txt_leggi_1 == "Riga di test 1") {
+    stampa("2. Lettura TXT: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Lettura TXT errata:", txt_leggi_1)
+}
+
+// Sovrascrittura
+crea txt_scrivi_2 = scrivi(txt_path, "Nuovo contenuto sovrascritto")
+crea txt_leggi_2 = leggi(txt_path)
+se (txt_scrivi_2 == vero && txt_leggi_2 == "Nuovo contenuto sovrascritto") {
+    stampa("3. Sovrascrittura TXT: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Sovrascrittura TXT fallita")
+}
+
+// Eliminazione
+crea txt_elimina = elimina(txt_path)
+se (txt_elimina == vero) {
+    stampa("4. Eliminazione TXT: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Eliminazione TXT fallita")
+}
+
+// ==========================================
+// 3. Test File JSON (Mappe, Serializzazione, Deserializzazione)
+// ==========================================
+crea json_path = "temp_all_test.json"
+crea mappa_dati = {
+    "numero": 100,
+    "stringa": "Test JSON",
+    "booleano": falso,
+    "nested": {
+        "valore": 9.9
+    }
+}
+
+// Scrittura Mappa JSON
+crea json_scrivi_1 = scrivi(json_path, mappa_dati)
+se (json_scrivi_1 == vero) {
+    stampa("5. Scrittura Mappa JSON: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Scrittura JSON fallita")
+}
+
+// Lettura Mappa JSON
+crea json_letto_1 = leggi(json_path)
+se (lunghezza(json_letto_1) == 4 && json_letto_1["numero"] == 100 && json_letto_1["nested"]["valore"] == 9.9) {
+    stampa("6. Lettura e Parsing Automatico Mappa JSON: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Lettura/Parsing JSON errata")
+}
+
+// Modifica Mappa e Riscrittura
+json_letto_1["stringa"] = "Modificata"
+json_letto_1["nuova_chiave"] = "Aggiunta"
+scrivi(json_path, json_letto_1)
+
+crea json_letto_2 = leggi(json_path)
+se (json_letto_2["stringa"] == "Modificata" && json_letto_2["nuova_chiave"] == "Aggiunta") {
+    stampa("7. Modifica e Riscrittura JSON: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Modifica JSON fallita")
+}
+
+// Eliminazione JSON mappa
+elimina(json_path)
+
+// ==========================================
+// 4. Test File JSON (Array)
+// ==========================================
+crea array_dati = [1, 2, "tre", {"quattro": 4}]
+scrivi(json_path, array_dati)
+
+crea array_letto = leggi(json_path)
+se (lunghezza(array_letto) == 4 && array_letto[2] == "tre" && array_letto[3]["quattro"] == 4) {
+    stampa("8. Scrittura/Lettura Array JSON: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Array JSON fallito")
+}
+
+elimina(json_path)
+
+// ==========================================
+// 5. Test Sicurezza Estensioni e Gestione Errori
+// ==========================================
+crea estensione_vietata_ok = falso
+prova {
+    scrivi("test.exe", "codice malevolo")
+} cattura (e) {
+    estensione_vietata_ok = vero
+}
+
+se (estensione_vietata_ok == vero) {
+    stampa("9. Protezione Estensioni File (.exe vietato): OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Protezione Estensioni fallita (scritto .exe senza eccezione)")
+}
+
+crea leggi_inesistente_ok = falso
+prova {
+    leggi("file_inesistente_12345.txt")
+} cattura (e) {
+    leggi_inesistente_ok = vero
+}
+
+se (leggi_inesistente_ok == vero) {
+    stampa("10. Lettura File Inesistente Gestita: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Lettura File Inesistente fallita (non ha lanciato eccezione)")
+}
+
+// ==========================================
+// 6. Resoconto Finale
+// ==========================================
+se (successi == 10) {
+    stampa("TUTTI I TEST FILE SYSTEM OK (0_ALL)")
+} altrimenti {
+    stampa("FAIL: Alcuni test file in 0_ALL sono falliti. Successi:", successi)
+}

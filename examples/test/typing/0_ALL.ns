@@ -1,0 +1,139 @@
+importa italiano da translate
+importa * da nio
+
+// ==========================================
+// 1. Inizializzazione Tracciamento
+// ==========================================
+crea successi = 0
+
+// ==========================================
+// 2. Test Booleani (vero, falso)
+// ==========================================
+crea b1 = vero
+crea b2 = falso
+
+se (b1 == vero && b2 == falso && (b1 != b2)) {
+    stampa("1. Tipo Booleano: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Tipo Booleano fallito")
+}
+
+// ==========================================
+// 3. Test Numeri (Interi e Decimali)
+// ==========================================
+crea n1 = 100
+crea n2 = 12.34
+crea somma_num = n1 + n2
+
+se (somma_num == 112.34) {
+    stampa("2. Tipo Numero (Intero + Decimale): OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Tipo Numero errato:", somma_num)
+}
+
+// ==========================================
+// 4. Test Stringhe ed Escape
+// ==========================================
+crea s1 = "Riga 1\nRiga 2\tTabulata"
+crea s2 = "Concatenazione " + "di stringhe"
+
+se (s2 == "Concatenazione di stringhe") {
+    stampa("3. Tipo Stringa ed Escape: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Tipo Stringa errato")
+}
+
+// ==========================================
+// 5. Test Valore Nullo (nullo)
+// ==========================================
+crea val_nullo = nullo
+crea e_nullo = falso
+se (val_nullo == nullo) {
+    e_nullo = vero
+}
+
+se (e_nullo == vero) {
+    stampa("4. Valore Nullo (nullo): OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Valore Nullo errato")
+}
+
+// ==========================================
+// 6. Test Costanti (fissa)
+// ==========================================
+fissa MIA_COSTANTE = 500
+crea errore_costante = falso
+
+prova {
+    MIA_COSTANTE = 999
+} cattura (e) {
+    errore_costante = vero
+    stampa("Eccezione catturata correttamente per costante:", e)
+}
+
+se (errore_costante == vero && MIA_COSTANTE == 500) {
+    stampa("5. Protezione Costanti (fissa): OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Protezione Costanti fallita")
+}
+
+// ==========================================
+// 7. Test Variabili Non Definite
+// ==========================================
+crea errore_indefinita = falso
+prova {
+    crea ris = variabile_inesistente_xyz + 10
+} cattura (e) {
+    errore_indefinita = vero
+    stampa("Eccezione catturata per variabile indefinita:", e)
+}
+
+se (errore_indefinita == vero) {
+    stampa("6. Gestione Variabili Non Definite: OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Variabili Non Definite fallito")
+}
+
+// ==========================================
+// 8. Test Try-Catch-Finally (infine)
+// ==========================================
+crea infine_eseguito_su_successo = falso
+crea infine_eseguito_su_errore = falso
+
+// Caso 1: Successo
+prova {
+    crea temporanea = 1
+} infine {
+    infine_eseguito_su_successo = vero
+}
+
+// Caso 2: Errore
+prova {
+    lancia "errore_volontario"
+} cattura (e) {
+    // cattura l'eccezione
+} infine {
+    infine_eseguito_su_errore = vero
+}
+
+se (infine_eseguito_su_successo == vero && infine_eseguito_su_errore == vero) {
+    stampa("7. Blocco Infine (Finally): OK")
+    successi = successi + 1
+} altrimenti {
+    stampa("FAIL: Blocco Infine (Finally) fallito")
+}
+
+// ==========================================
+// 9. Resoconto Finale
+// ==========================================
+se (successi == 7) {
+    stampa("TUTTI I TEST TYPING OK (0_ALL)")
+} altrimenti {
+    stampa("FAIL: Alcuni test typing in 0_ALL sono falliti. Successi:", successi)
+}

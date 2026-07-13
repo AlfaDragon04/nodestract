@@ -1,0 +1,139 @@
+importa italiano da translate
+importa * da nio
+
+// ==========================================
+// 1. Inizializzazione Variabili per i Test
+// ==========================================
+crea a = 10
+crea b = 20
+crea c = 30
+crea flag = vero
+crea risultato_se = falso
+crea risultato_scelta = ""
+crea contatore_successi = 0
+
+// ==========================================
+// 2. Test Condizionale If-Else-If-Else Lineare
+// ==========================================
+se (a > b) {
+    risultato_se = falso
+} altrimenti se (a == b) {
+    risultato_se = falso
+} altrimenti {
+    risultato_se = vero
+}
+
+se (risultato_se == vero) {
+    stampa("Test If-Else Lineare: OK")
+    contatore_successi = contatore_successi + 1
+} altrimenti {
+    stampa("FAIL: Test If-Else Lineare fallito")
+}
+
+// ==========================================
+// 3. Test Condizionali Annidati (Nested If)
+// ==========================================
+crea nested_ok = falso
+se (flag) {
+    se (c > b) {
+        se (a < c) {
+            nested_ok = vero
+        }
+    }
+}
+
+se (nested_ok == vero) {
+    stampa("Test Condizionali Annidati: OK")
+    contatore_successi = contatore_successi + 1
+} altrimenti {
+    stampa("FAIL: Test Condizionali Annidati fallito")
+}
+
+// ==========================================
+// 4. Test Switch-Case (Scelta)
+// ==========================================
+crea opzione = "secondo"
+scelta (opzione) {
+    caso "primo":
+        risultato_scelta = "UNO"
+    caso "secondo":
+        risultato_scelta = "DUE"
+    caso "terzo":
+        risultato_scelta = "TRE"
+    predefinito:
+        risultato_scelta = "SCONOSCIUTO"
+}
+
+se (risultato_scelta == "DUE") {
+    stampa("Test Scelta-Caso (Match): OK")
+    contatore_successi = contatore_successi + 1
+} altrimenti {
+    stampa("FAIL: Test Scelta-Caso (Match) fallito")
+}
+
+// ==========================================
+// 5. Test Switch-Case Predefinito (Default)
+// ==========================================
+crea opzione_non_valida = "quarto"
+crea risultato_default = ""
+scelta (opzione_non_valida) {
+    caso "primo":
+        risultato_default = "UNO"
+    caso "secondo":
+        risultato_default = "DUE"
+    predefinito:
+        risultato_default = "DEFAULT"
+}
+
+se (risultato_default == "DEFAULT") {
+    stampa("Test Scelta-Predefinito: OK")
+    contatore_successi = contatore_successi + 1
+} altrimenti {
+    stampa("FAIL: Test Scelta-Predefinito fallito")
+}
+
+// ==========================================
+// 6. Test Operatore Ternario
+// ==========================================
+crea valore_ternario = (a < b) ? "minore" : "maggiore"
+se (valore_ternario == "minore") {
+    stampa("Test Operatore Ternario Base: OK")
+    contatore_successi = contatore_successi + 1
+} altrimenti {
+    stampa("FAIL: Test Operatore Ternario Base fallito")
+}
+
+// ==========================================
+// 7. Test Operatori Ternari Annidati
+// ==========================================
+crea ternario_annidato = (a > b) ? "caso1" : ((c > b) ? "caso2" : "caso3")
+se (ternario_annidato == "caso2") {
+    stampa("Test Operatore Ternario Annidato: OK")
+    contatore_successi = contatore_successi + 1
+} altrimenti {
+    stampa("FAIL: Test Operatore Ternario Annidato fallito")
+}
+
+// ==========================================
+// 8. Test Condizioni con Espressioni Complesse
+// ==========================================
+crea cond_complessa = falso
+se ((a + b == c) && (c - a == b) && !falso) {
+    cond_complessa = vero
+}
+
+se (cond_complessa == vero) {
+    stampa("Test Condizioni Complesse: OK")
+    contatore_successi = contatore_successi + 1
+} altrimenti {
+    stampa("FAIL: Test Condizioni Complesse fallito")
+}
+
+// ==========================================
+// 9. Verifica Riassuntiva del Modulo Condizionale
+// ==========================================
+se (contatore_successi == 7) {
+    stampa("TUTTI I TEST CONDIZIONALI OK (0_ALL)")
+} altrimenti {
+    stampa("FAIL: Alcuni test condizionali in 0_ALL sono falliti. Successi:", contatore_successi)
+}

@@ -53,44 +53,31 @@ impl Interpreter {
         }
     }
 
-    /// Esegue il programma rispettando la semantica dell'entry-point:
-    ///
-    /// - **Con `main`**: registra tutte le dichiarazioni di funzione, poi esegue
-    ///   esclusivamente il corpo di `main`. Le istruzioni globali fuori da `main`
-    ///   vengono ignorate — nessuna funzione si auto-esegue mai.
-    /// - **Senza `main`**: esegue le istruzioni globali top-to-bottom (modalità script).
+    /// Esegue il programma:
+    /// - Esegue tutte le istruzioni globali top-to-bottom (definendo variabili, registrando funzioni, ed eseguendo espressioni globali).
+    /// - Successivamente, se esiste una funzione denominata "main", esegue anche il suo corpo.
     pub fn run(&mut self, program: Program) {
-        // Prima passata: verifica se esiste una funzione di nome "main"
-        let has_main = program.statements.iter().any(|s| {
-            matches!(s, Statement::FunctionDecl { name, .. } if name == "main")
-        });
+        self.load_program(program);
+        
+        if self.exception.is_some() {
+            return;
+        }
 
-        if has_main {
-            // Con main: registra solo le dichiarazioni di funzione, ignora il resto
-            for stmt in &program.statements {
-                if let Statement::FunctionDecl { name, .. } = stmt {
-                    self.functions.insert(name.clone(), stmt.clone());
-                }
-            }
-            // L'unico punto di ingresso è main
-            if let Some(func_stmt) = self.functions.get("main").cloned() {
-                if let Statement::FunctionDecl { body, .. } = func_stmt {
-                    for s in body {
-                        self.execute_statement(&s);
-                        if self.exception.is_some() {
-                            break;
-                        }
-                        if self.last_return.is_some() {
-                            break;
-                        }
+        if let Some(func_stmt) = self.functions.get("main").cloned() {
+            if let Statement::FunctionDecl { body, .. } = func_stmt {
+                for s in body {
+                    self.execute_statement(&s);
+                    if self.exception.is_some() {
+                        break;
+                    }
+                    if self.last_return.is_some() {
+                        break;
                     }
                 }
             }
-        } else {
-            // Senza main: esegui il codice globale top-to-bottom (modalità script)
-            self.load_program(program);
         }
     }
+
 
     pub fn current_scope(&mut self) -> &mut HashMap<String, VarEntry> {
         self.scopes.last_mut().unwrap()
